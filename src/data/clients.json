@@ -1,0 +1,327 @@
+[
+  {
+    "id": "c-k1",
+    "rmId": "rm-kevin",
+    "name": "Eleanor Chua",
+    "mandate": "Discretionary",
+    "riskProfile": "Conservative",
+    "banks": [
+      "DBS",
+      "UBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-07-02",
+    "aumUsd": 12400000
+  },
+  {
+    "id": "c-k2",
+    "rmId": "rm-kevin",
+    "name": "Rajesh Menon",
+    "mandate": "Advisory",
+    "riskProfile": "Growth",
+    "banks": [
+      "UBS"
+    ],
+    "prefersFrequentUpdates": true,
+    "lastContactDate": "2026-10-02",
+    "notes": "Asked to be told promptly about anything affecting his structured note.",
+    "aumUsd": 8000000
+  },
+  {
+    "id": "c-k3",
+    "rmId": "rm-kevin",
+    "name": "Lim Boon Huat & Family",
+    "mandate": "Advisory",
+    "riskProfile": "Balanced",
+    "banks": [
+      "DBS",
+      "Julius Baer"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-29",
+    "notes": "Family account: separate beneficial owners. Confirm which family member to contact for each position.",
+    "aumUsd": 21000000
+  },
+  {
+    "id": "c-k4",
+    "rmId": "rm-kevin",
+    "name": "Hartono Wijaya",
+    "mandate": "Advisory",
+    "riskProfile": "Aggressive",
+    "banks": [
+      "UBS",
+      "Bank of Singapore"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-21",
+    "aumUsd": 15000000
+  },
+  {
+    "id": "c-k5",
+    "rmId": "rm-kevin",
+    "name": "Sophie Laurent",
+    "mandate": "Advisory",
+    "riskProfile": "Balanced",
+    "banks": [
+      "Julius Baer"
+    ],
+    "prefersFrequentUpdates": true,
+    "lastContactDate": "2026-10-06",
+    "aumUsd": 6500000
+  },
+  {
+    "id": "c-k6",
+    "rmId": "rm-kevin",
+    "name": "Dr Amanda Yeo",
+    "mandate": "Discretionary",
+    "riskProfile": "Balanced",
+    "banks": [
+      "DBS",
+      "UBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-24",
+    "aumUsd": 9500000
+  },
+  {
+    "id": "c-k7",
+    "rmId": "rm-kevin",
+    "name": "Victor Ong",
+    "mandate": "Discretionary",
+    "riskProfile": "Conservative",
+    "banks": [
+      "Bank of Singapore"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-08-14",
+    "notes": "Relies on bond coupons for regular income.",
+    "aumUsd": 5000000
+  },
+  {
+    "id": "c-k8",
+    "rmId": "rm-kevin",
+    "name": "Margaret Seah",
+    "mandate": "Advisory",
+    "riskProfile": "Conservative",
+    "banks": [
+      "DBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-30",
+    "aumUsd": 3200000
+  },
+  {
+    "id": "c-s1",
+    "rmId": "rm-sarah",
+    "name": "Chen Wei Ming",
+    "mandate": "Advisory",
+    "riskProfile": "Aggressive",
+    "banks": [
+      "UBS",
+      "Julius Baer"
+    ],
+    "prefersFrequentUpdates": true,
+    "lastContactDate": "2026-10-05",
+    "aumUsd": 28000000
+  },
+  {
+    "id": "c-s2",
+    "rmId": "rm-sarah",
+    "name": "Priya Nair",
+    "mandate": "Discretionary",
+    "riskProfile": "Conservative",
+    "banks": [
+      "DBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-25",
+    "aumUsd": 7200000
+  },
+  {
+    "id": "c-s3",
+    "rmId": "rm-sarah",
+    "name": "Marcus Koh",
+    "mandate": "Advisory",
+    "riskProfile": "Growth",
+    "banks": [
+      "Bank of Singapore",
+      "UBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-01",
+    "aumUsd": 11000000
+  },
+  {
+    "id": "c-s4",
+    "rmId": "rm-sarah",
+    "name": "Isabelle Fontaine",
+    "mandate": "Advisory",
+    "riskProfile": "Balanced",
+    "banks": [
+      "Julius Baer"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-28",
+    "aumUsd": 4800000
+  },
+  {
+    "id": "c-s5",
+    "rmId": "rm-sarah",
+    "name": "Tan Kok Leong",
+    "mandate": "Discretionary",
+    "riskProfile": "Balanced",
+    "banks": [
+      "DBS",
+      "UBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-22",
+    "notes": "Joint account with spouse. Both sign off on strategy changes.",
+    "aumUsd": 16500000
+  },
+  {
+    "id": "c-s6",
+    "rmId": "rm-sarah",
+    "name": "Farah Abdullah",
+    "mandate": "Advisory",
+    "riskProfile": "Conservative",
+    "banks": [
+      "DBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-18",
+    "aumUsd": 2600000
+  },
+  {
+    "id": "c-s7",
+    "rmId": "rm-sarah",
+    "name": "Oliver Hayes",
+    "mandate": "Advisory",
+    "riskProfile": "Growth",
+    "banks": [
+      "UBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-10-01",
+    "aumUsd": 5400000
+  },
+  {
+    "id": "c-s8",
+    "rmId": "rm-sarah",
+    "name": "Lee Hui Min",
+    "mandate": "Discretionary",
+    "riskProfile": "Balanced",
+    "banks": [
+      "Bank of Singapore"
+    ],
+    "prefersFrequentUpdates": true,
+    "lastContactDate": "2026-10-07",
+    "aumUsd": 9000000
+  },
+  {
+    "id": "c-d1",
+    "rmId": "rm-daniel",
+    "name": "Nguyen Thanh Hai",
+    "mandate": "Advisory",
+    "riskProfile": "Aggressive",
+    "banks": [
+      "UBS",
+      "Standard Chartered"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-23",
+    "aumUsd": 42000000
+  },
+  {
+    "id": "c-d2",
+    "rmId": "rm-daniel",
+    "name": "Grace Halim",
+    "mandate": "Discretionary",
+    "riskProfile": "Conservative",
+    "banks": [
+      "Standard Chartered"
+    ],
+    "prefersFrequentUpdates": true,
+    "lastContactDate": "2026-10-01",
+    "aumUsd": 6000000
+  },
+  {
+    "id": "c-d3",
+    "rmId": "rm-daniel",
+    "name": "Benjamin Teo",
+    "mandate": "Advisory",
+    "riskProfile": "Growth",
+    "banks": [
+      "DBS",
+      "UBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-26",
+    "aumUsd": 13500000
+  },
+  {
+    "id": "c-d4",
+    "rmId": "rm-daniel",
+    "name": "Chong Mei Ling",
+    "mandate": "Advisory",
+    "riskProfile": "Balanced",
+    "banks": [
+      "DBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-08-30",
+    "aumUsd": 3900000
+  },
+  {
+    "id": "c-d5",
+    "rmId": "rm-daniel",
+    "name": "Arjun Kapoor",
+    "mandate": "Advisory",
+    "riskProfile": "Growth",
+    "banks": [
+      "Standard Chartered"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-27",
+    "aumUsd": 7800000
+  },
+  {
+    "id": "c-d6",
+    "rmId": "rm-daniel",
+    "name": "Helen Sim",
+    "mandate": "Discretionary",
+    "riskProfile": "Conservative",
+    "banks": [
+      "DBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-19",
+    "aumUsd": 4400000
+  },
+  {
+    "id": "c-d7",
+    "rmId": "rm-daniel",
+    "name": "Kenji Watanabe",
+    "mandate": "Advisory",
+    "riskProfile": "Balanced",
+    "banks": [
+      "UBS"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-10-03",
+    "aumUsd": 10200000
+  },
+  {
+    "id": "c-d8",
+    "rmId": "rm-daniel",
+    "name": "Stephanie Ng",
+    "mandate": "Discretionary",
+    "riskProfile": "Growth",
+    "banks": [
+      "Bank of Singapore"
+    ],
+    "prefersFrequentUpdates": false,
+    "lastContactDate": "2026-09-16",
+    "aumUsd": 5600000
+  }
+]

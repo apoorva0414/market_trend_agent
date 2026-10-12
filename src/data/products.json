@@ -1,0 +1,82 @@
+[
+  {
+    "id": "p-sd-usd",
+    "name": "Short Duration USD Bond Fund",
+    "assetClass": "Fund",
+    "tags": ["short-duration-bonds"],
+    "riskLevel": 2,
+    "oneLiner": "Investment grade USD bonds with 1 to 3 years to maturity, for income with limited rate risk."
+  },
+  {
+    "id": "p-usd-mmf",
+    "name": "USD Money Market Fund",
+    "assetClass": "Fund",
+    "tags": ["usd-cash"],
+    "riskLevel": 1,
+    "oneLiner": "Daily-liquidity cash fund, a parking place while deciding how to reinvest."
+  },
+  {
+    "id": "p-asia-ig",
+    "name": "Asia Investment Grade Credit Fund",
+    "assetClass": "Fund",
+    "tags": ["asia-credit"],
+    "riskLevel": 2,
+    "oneLiner": "Diversified Asian investment grade bonds with moderate duration."
+  },
+  {
+    "id": "p-china-eq",
+    "name": "China Equity Opportunities Fund",
+    "assetClass": "Fund",
+    "tags": ["china-equity"],
+    "riskLevel": 5,
+    "oneLiner": "Actively managed onshore and offshore Chinese equities, tilted to domestic consumption."
+  },
+  {
+    "id": "p-hk-div",
+    "name": "Hong Kong High Dividend Equity Fund",
+    "assetClass": "Fund",
+    "tags": ["hk-equity"],
+    "riskLevel": 4,
+    "oneLiner": "Hong Kong-listed companies with stable dividends, a lower-volatility route into the market."
+  },
+  {
+    "id": "p-hscei-cpn",
+    "name": "Capital-Protected Note on the HSCEI (18 months)",
+    "assetClass": "Structured Product",
+    "tags": ["china-equity", "hk-equity"],
+    "riskLevel": 2,
+    "oneLiner": "100% capital protection at maturity with capped participation in the upside of the HSCEI."
+  },
+  {
+    "id": "p-gold",
+    "name": "Physical Gold ETF",
+    "assetClass": "Fund",
+    "tags": ["gold"],
+    "riskLevel": 3,
+    "oneLiner": "Physically backed gold exposure as a portfolio diversifier."
+  },
+  {
+    "id": "p-energy",
+    "name": "Global Energy Equity Fund",
+    "assetClass": "Fund",
+    "tags": ["energy"],
+    "riskLevel": 4,
+    "oneLiner": "Diversified global energy producers and service companies."
+  },
+  {
+    "id": "p-us-tech",
+    "name": "US Technology Leaders Fund",
+    "assetClass": "Fund",
+    "tags": ["us-tech"],
+    "riskLevel": 4,
+    "oneLiner": "Diversified US technology exposure, an alternative to concentrated single-stock positions."
+  },
+  {
+    "id": "p-ap-reit",
+    "name": "Asia-Pacific REIT Income Fund",
+    "assetClass": "Fund",
+    "tags": ["reits"],
+    "riskLevel": 3,
+    "oneLiner": "Diversified Asia-Pacific REITs, selected for low gearing and long debt maturities."
+  }
+]

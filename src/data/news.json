@@ -1,0 +1,142 @@
+[
+  {
+    "id": "n01",
+    "source": "Market news wire",
+    "publishedAt": "2026-10-12T05:50:00+08:00",
+    "headline": "New sanctions on major crude exporters tighten oil supply; Brent jumps 6%",
+    "summary": "Western governments announced new sanctions on two major crude exporters overnight. Traders expect around 1.5 million barrels a day to leave the market, and Brent rose about 6% in early Asian trading.",
+    "themeId": "theme-oil-sanctions",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n02",
+    "source": "Market news wire",
+    "publishedAt": "2026-10-12T06:05:00+08:00",
+    "headline": "Treasury yields surge as Fed officials signal rates will stay higher for longer",
+    "summary": "Three Federal Reserve officials said inflation progress has stalled and that rate cuts are not on the table this year. The 10-year Treasury yield rose about 25 basis points, its largest one-day move in months.",
+    "themeId": "theme-us-yields",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n03",
+    "source": "Market news wire",
+    "publishedAt": "2026-10-12T06:30:00+08:00",
+    "headline": "Big Tech sells a record USD 45bn of bonds in a week to fund AI data centres",
+    "summary": "Four of the largest US technology companies issued a combined USD 45bn of bonds last week, a record for the sector. Proceeds are earmarked for AI data centres and chips, and several deals priced at wider spreads than expected.",
+    "themeId": "theme-ai-capex",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n04",
+    "source": "Market news wire",
+    "publishedAt": "2026-10-12T06:50:00+08:00",
+    "headline": "Geneva watch auction sets a new record for a vintage chronograph",
+    "summary": "A rare 1950s chronograph sold for a record price at a Geneva auction on Sunday. Organisers said bidding from Asian collectors was strong.",
+    "themeId": null,
+    "relevant": false,
+    "batch": "morning"
+  },
+  {
+    "id": "n05",
+    "source": "Partner bank A morning note",
+    "publishedAt": "2026-10-12T07:15:00+08:00",
+    "headline": "Rates: we push back our first Fed cut call to mid-2027",
+    "summary": "After Friday's Fed comments we no longer expect a rate cut this year or early next. We see the 10-year yield staying elevated and prefer the 1 to 3 year part of the curve.",
+    "themeId": "theme-us-yields",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n06",
+    "source": "Partner bank A morning note",
+    "publishedAt": "2026-10-12T07:20:00+08:00",
+    "headline": "Energy: sanctions add a supply premium, airlines face higher fuel bills",
+    "summary": "We raise our near-term Brent range. Integrated energy producers benefit directly, while airlines with limited fuel hedging face margin pressure.",
+    "themeId": "theme-oil-sanctions",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n07",
+    "source": "Partner bank A morning note",
+    "publishedAt": "2026-10-12T07:25:00+08:00",
+    "headline": "Reminder: e-banking maintenance window this weekend",
+    "summary": "The e-banking platform will be unavailable from Saturday 22:00 to Sunday 06:00 SGT for scheduled maintenance. Trade instructions can still be placed by phone.",
+    "themeId": null,
+    "relevant": false,
+    "batch": "morning"
+  },
+  {
+    "id": "n08",
+    "source": "Partner bank B CIO daily",
+    "publishedAt": "2026-10-12T07:40:00+08:00",
+    "headline": "REITs and long-dated bonds bear the brunt of the yield move",
+    "summary": "Rate-sensitive assets fell sharply. Long-dated USD bonds lost around 3 to 4% and Asian REITs opened lower, while short-dated bonds were little changed.",
+    "themeId": "theme-us-yields",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n09",
+    "source": "Partner bank B CIO daily",
+    "publishedAt": "2026-10-12T07:45:00+08:00",
+    "headline": "AI capex: credit investors start to ask for a higher premium",
+    "summary": "Heavy bond supply is weighing on technology credit spreads and has spilled over into tech equities. Structured notes linked to large technology shares have moved closer to their barriers.",
+    "themeId": "theme-ai-capex",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n10",
+    "source": "Partner bank B CIO daily",
+    "publishedAt": "2026-10-12T07:50:00+08:00",
+    "headline": "Invitation: wealth planning webinar on family governance",
+    "summary": "Our wealth planning team will host a webinar on family governance and succession on 22 October. Registration is open to clients and their advisers.",
+    "themeId": null,
+    "relevant": false,
+    "batch": "morning"
+  },
+  {
+    "id": "n11",
+    "source": "Market news wire",
+    "publishedAt": "2026-10-12T07:55:00+08:00",
+    "headline": "China unveils new stimulus package aimed at consumption and property",
+    "summary": "Beijing announced a package of consumer subsidies, property support and local government refinancing. Mainland and Hong Kong equity futures rose sharply ahead of the open.",
+    "themeId": "theme-china-stimulus",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n12",
+    "source": "Azimut Group research",
+    "publishedAt": "2026-10-12T08:10:00+08:00",
+    "headline": "China stimulus: constructive on Asia, but follow-through matters",
+    "summary": "The package is larger than the market expected and supports our modest overweight in Asia ex-Japan equities. We would build exposure gradually, as earlier rallies faded when implementation was slow.",
+    "themeId": "theme-china-stimulus",
+    "relevant": true,
+    "batch": "morning"
+  },
+  {
+    "id": "n13",
+    "source": "Market news wire",
+    "publishedAt": "2026-10-12T13:10:00+08:00",
+    "headline": "Oil sanctions widened to cover shipping and insurance; Brent extends gains",
+    "summary": "The sanctions announced overnight were widened at midday to cover tankers and marine insurers. Brent extended its gain to about 10% on the day and jet fuel prices rose with it.",
+    "themeId": "theme-oil-sanctions",
+    "relevant": true,
+    "batch": "intraday"
+  },
+  {
+    "id": "n14",
+    "source": "Partner bank A corporate action notice",
+    "publishedAt": "2026-10-12T13:35:00+08:00",
+    "headline": "Partner Bank A to redeem its 5.875% USD perpetual at par on 12 November 2026",
+    "summary": "Partner Bank A issued a call notice for its 5.875% USD perpetual bond. Holders will be repaid at par on 12 November 2026. The bond had traded around 96 because the market expected the call to be skipped.",
+    "themeId": "theme-perp-call",
+    "relevant": true,
+    "batch": "intraday"
+  }
+]

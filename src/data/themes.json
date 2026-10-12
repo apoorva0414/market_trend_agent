@@ -1,0 +1,219 @@
+[
+  {
+    "id": "theme-us-yields",
+    "title": "US yields jump after hawkish Fed signals",
+    "shortTitle": "US yields",
+    "type": "View",
+    "batch": "morning",
+    "whatHappened": "The 10-year US Treasury yield rose about 25 basis points after several Fed officials signalled that rates will stay higher for longer. Long-dated bonds and rate-sensitive assets such as REITs sold off.",
+    "whyItMatters": "Portfolios holding long-duration USD bonds or REITs take the largest mark-to-market hit. Short-dated bonds are barely affected, and new money can now lock in higher yields.",
+    "affectedTags": [
+      {
+        "tag": "long-duration-usd-bonds",
+        "estMovePct": -3.5
+      },
+      {
+        "tag": "reits",
+        "estMovePct": -4
+      },
+      {
+        "tag": "short-duration-bonds",
+        "estMovePct": -0.5
+      }
+    ],
+    "prospectAngle": "Higher yields let new money lock in attractive income at the short end without taking much interest rate risk.",
+    "prospectSuits": "Income-focused investors holding excess cash",
+    "relevantProductIds": [
+      "p-sd-usd",
+      "p-usd-mmf",
+      "p-gold"
+    ],
+    "clientSummary": "US interest rates now look likely to stay higher for longer, and bond yields rose sharply overnight. When yields rise, the prices of long-dated bonds and of property trusts (REITs) tend to fall.",
+    "clientTalkingPoint": "Higher yields also work in your favour over time: maturing bonds and new money can be reinvested at better rates than a few months ago.",
+    "stressTest": "The view rests on our reading of Fed communication. Check it against the next inflation release: a soft number could reverse part of the move.",
+    "keyRisks": [
+      "Yields could rise further if inflation data surprises to the upside.",
+      "If growth slows sharply, long-dated bonds could rally and short-dated bonds would lag.",
+      "REITs with high gearing face rising refinancing costs even if yields stabilise."
+    ],
+    "likelyQuestions": [
+      "Should I sell my long-dated bonds now, or wait?",
+      "How much further could these holdings fall if yields keep rising?",
+      "Is the income I receive from these holdings affected?"
+    ]
+  },
+  {
+    "id": "theme-ai-capex",
+    "title": "Big Tech funds AI capex with record bond issuance",
+    "shortTitle": "AI capex bonds",
+    "type": "View",
+    "batch": "morning",
+    "whatHappened": "Large US technology companies issued a record volume of bonds in a single week to fund AI data centres. Technology credit spreads widened, tech shares slipped, and notes linked to them moved closer to their barriers.",
+    "whyItMatters": "The companies remain highly rated, but heavy supply puts pressure on existing tech bonds, and investors are questioning the return on AI spending. Structured notes on tech underlyings are the most sensitive.",
+    "affectedTags": [
+      {
+        "tag": "us-tech-credit",
+        "estMovePct": -2
+      },
+      {
+        "tag": "us-tech",
+        "estMovePct": -1.5
+      },
+      {
+        "tag": "structured-notes-tech-underlying",
+        "estMovePct": -6
+      }
+    ],
+    "prospectAngle": "Concentrated technology positions built up over the past few years are a natural opening for a diversification conversation.",
+    "prospectSuits": "Investors with large single-stock technology positions",
+    "relevantProductIds": [
+      "p-us-tech",
+      "p-sd-usd",
+      "p-asia-ig"
+    ],
+    "clientSummary": "The largest US technology companies borrowed a record amount last week to pay for AI data centres. The sheer volume of new bonds pushed down the prices of existing technology bonds, and technology shares slipped as well.",
+    "clientTalkingPoint": "The companies involved remain financially strong. The question the market is asking is about the pace of spending, not about their ability to repay.",
+    "stressTest": "The view assumes supply stays heavy. Check it against the upcoming earnings season: strong AI revenue could quickly restore confidence.",
+    "keyRisks": [
+      "Further large bond deals could keep technology credit spreads under pressure.",
+      "A weak earnings season would hit technology shares and linked structured notes at the same time.",
+      "Structured notes can fall faster than the underlying shares as a barrier approaches."
+    ],
+    "likelyQuestions": [
+      "Is my structured note at risk of breaching its barrier?",
+      "Are these technology companies taking on too much debt?",
+      "Should I reduce my technology exposure?"
+    ]
+  },
+  {
+    "id": "theme-oil-sanctions",
+    "title": "New sanctions tighten oil supply",
+    "shortTitle": "Oil sanctions",
+    "type": "Pulse",
+    "batch": "morning",
+    "whatHappened": "New sanctions on two major crude exporters were announced overnight. Brent rose about 6% as traders priced in lower supply.",
+    "whyItMatters": "Energy producers benefit directly from higher prices. Airlines face higher fuel costs, which squeezes margins where hedging is limited.",
+    "affectedTags": [
+      {
+        "tag": "energy",
+        "estMovePct": 5
+      },
+      {
+        "tag": "airlines",
+        "estMovePct": -4
+      }
+    ],
+    "prospectAngle": "Energy is under-owned in many portfolios, and the supply shock is a timely reason to discuss commodity exposure as a diversifier.",
+    "prospectSuits": "Balanced investors with little or no commodity exposure",
+    "relevantProductIds": [
+      "p-energy",
+      "p-gold"
+    ],
+    "clientSummary": "New sanctions on two major oil exporters were announced overnight, and the oil price rose sharply. Energy companies gain from higher prices, while airlines face a larger fuel bill.",
+    "clientTalkingPoint": "This is a factual market development. How long prices stay high depends on how the sanctions are enforced and on how other producers respond.",
+    "keyRisks": [
+      "Sanctions could be eased or weakly enforced, which would reverse the price move.",
+      "Other producers could raise output and cap prices.",
+      "Sustained high oil prices could weigh on global growth and on other holdings."
+    ],
+    "likelyQuestions": [
+      "Should I take profit on my energy holdings?",
+      "How exposed are my airline holdings to fuel costs?",
+      "Does a higher oil price affect the rest of my portfolio?"
+    ],
+    "intradayUpdate": {
+      "note": "Update 13:10 SGT: the sanctions were widened to cover shipping and insurance. Brent extended its gain to about 10%, and the estimated moves for energy and airlines have been raised.",
+      "affectedTags": [
+        {
+          "tag": "energy",
+          "estMovePct": 8
+        },
+        {
+          "tag": "airlines",
+          "estMovePct": -7
+        }
+      ]
+    }
+  },
+  {
+    "id": "theme-china-stimulus",
+    "title": "China announces new stimulus package",
+    "shortTitle": "China stimulus",
+    "type": "View",
+    "batch": "morning",
+    "whatHappened": "Beijing announced a package of consumer subsidies, property support and local government refinancing that was larger than the market expected. Mainland and Hong Kong equities rallied.",
+    "whyItMatters": "Clients holding China or Hong Kong equities and Asian credit see gains, which opens a rebalancing conversation. Clients with little Asian exposure may ask whether they are missing out.",
+    "affectedTags": [
+      {
+        "tag": "china-equity",
+        "estMovePct": 6
+      },
+      {
+        "tag": "hk-equity",
+        "estMovePct": 4
+      },
+      {
+        "tag": "asia-credit",
+        "estMovePct": 1
+      }
+    ],
+    "prospectAngle": "The stimulus package is a timely reason to open a conversation about Asian exposure, with capital-protected and diversified routes for investors who are wary of the volatility.",
+    "prospectSuits": "Growth investors underweight Asia",
+    "prospectFeatured": true,
+    "relevantProductIds": [
+      "p-china-eq",
+      "p-hscei-cpn",
+      "p-hk-div",
+      "p-asia-ig"
+    ],
+    "clientSummary": "China announced a larger than expected package to support consumers and the property market. Chinese and Hong Kong shares rose strongly in response.",
+    "clientTalkingPoint": "Earlier stimulus rallies faded when implementation was slow, so we would add or trim in steps instead of making one large move.",
+    "stressTest": "The view assumes the measures are implemented quickly. Check it against the detail and timing of the announcements over the coming weeks.",
+    "keyRisks": [
+      "Implementation could be slower or smaller than announced, and earlier rallies have faded for this reason.",
+      "Trade and geopolitical tensions can reverse sentiment quickly.",
+      "Chinese equities are volatile, so position sizes should reflect the investor's risk profile."
+    ],
+    "likelyQuestions": [
+      "Is this rally different from the previous ones that faded?",
+      "Should I take some profit after this move?",
+      "Should I add to my Asian holdings now?"
+    ]
+  },
+  {
+    "id": "theme-perp-call",
+    "title": "Partner bank issues call notice on a USD perpetual bond",
+    "shortTitle": "Perpetual call notice",
+    "type": "Pulse",
+    "batch": "intraday",
+    "whatHappened": "Partner Bank A issued a call notice for its 5.875% USD perpetual bond. Holders will be repaid at par on 12 November 2026. The bond had traded around 96, as the market expected the call to be skipped.",
+    "whyItMatters": "Holders gain about 4% as the price moves to par, but the 5.875% coupon stops on the call date. The proceeds need to be reinvested, at a time when the house view prefers the short end.",
+    "affectedTags": [
+      {
+        "tag": "called-usd-perpetual",
+        "estMovePct": 4
+      }
+    ],
+    "prospectAngle": "Investors holding this bond at other institutions face the same reinvestment decision by 12 November, which is an opening to offer a second opinion on their fixed income holdings.",
+    "prospectSuits": "Income investors holding bank perpetual bonds",
+    "relevantProductIds": [
+      "p-sd-usd",
+      "p-asia-ig",
+      "p-usd-mmf"
+    ],
+    "clientSummary": "Partner Bank A has announced that it will repay its 5.875% USD perpetual bond in full on 12 November 2026. The bond had been trading below its face value, so its price has risen to reflect repayment at par.",
+    "clientTalkingPoint": "This is a factual corporate action. No instruction is needed from you for the redemption itself, which is processed automatically by the custodian bank.",
+    "clientNextStep": "Decide how to reinvest the redemption proceeds, which are expected on 12 November 2026.",
+    "clientNextStepDiscretionary": "We will reinvest the redemption proceeds, expected on 12 November 2026, in line with your mandate and confirm the change to you.",
+    "keyRisks": [
+      "Reinvestment risk: comparable income is hard to replace at the same credit quality.",
+      "Replacing the bond with a longer-dated or lower-rated one would raise portfolio risk.",
+      "Leaving the proceeds in cash for long reduces portfolio income."
+    ],
+    "likelyQuestions": [
+      "When will I receive the money, and do I need to do anything?",
+      "What can replace the income from this bond?",
+      "Will other perpetual bonds I hold be called as well?"
+    ]
+  }
+]

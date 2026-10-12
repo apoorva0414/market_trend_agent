@@ -1,0 +1,98 @@
+[
+  {
+    "id": "hv-us-equity",
+    "assetClass": "US equities",
+    "stance": "Neutral",
+    "view": "Stay invested in quality, and trim concentrated mega-cap technology positions on strength.",
+    "action": "stay invested in quality and trim concentrated mega-cap technology positions on strength",
+    "tags": [
+      "us-tech"
+    ]
+  },
+  {
+    "id": "hv-asia-equity",
+    "assetClass": "Asia ex-Japan equities",
+    "stance": "Modest overweight",
+    "view": "Policy support in China improves the near-term outlook. Build exposure gradually and keep position sizes disciplined.",
+    "action": "build Asian exposure gradually and keep position sizes disciplined",
+    "tags": [
+      "china-equity",
+      "hk-equity"
+    ]
+  },
+  {
+    "id": "hv-duration",
+    "assetClass": "USD bonds",
+    "stance": "Neutral duration, prefer short end",
+    "view": "Lock in yields in the 1 to 3 year bucket and avoid adding to long-dated bonds until the rate path is clearer.",
+    "action": "lock in yields in the 1 to 3 year bucket and avoid adding to long-dated bonds until the rate path is clearer",
+    "tags": [
+      "long-duration-usd-bonds",
+      "short-duration-bonds"
+    ]
+  },
+  {
+    "id": "hv-credit",
+    "assetClass": "Credit",
+    "stance": "Prefer investment grade to high yield",
+    "view": "Be selective on technology issuers while supply is heavy, and stay constructive on Asian investment grade credit.",
+    "action": "stay with investment grade issuers and be selective on technology names while supply is heavy",
+    "tags": [
+      "us-tech-credit",
+      "asia-credit",
+      "called-usd-perpetual"
+    ]
+  },
+  {
+    "id": "hv-reits",
+    "assetClass": "REITs",
+    "stance": "Underweight while rates stay volatile",
+    "view": "Prefer REITs with low gearing and long debt maturities, which are less sensitive to refinancing costs.",
+    "action": "favour REITs with low gearing and long debt maturities",
+    "tags": [
+      "reits"
+    ]
+  },
+  {
+    "id": "hv-energy",
+    "assetClass": "Energy and oil-sensitive sectors",
+    "stance": "Neutral",
+    "view": "Treat price moves driven by geopolitics as a reason to rebalance, not to chase.",
+    "action": "use price moves driven by geopolitics to rebalance, not to chase",
+    "tags": [
+      "energy",
+      "airlines"
+    ]
+  },
+  {
+    "id": "hv-gold",
+    "assetClass": "Gold",
+    "stance": "Hold 3 to 5% as a diversifier",
+    "view": "Gold remains a useful hedge against geopolitical and inflation surprises.",
+    "action": "keep 3 to 5% in gold as a diversifier",
+    "tags": [
+      "gold"
+    ]
+  },
+  {
+    "id": "hv-structured",
+    "assetClass": "Structured products",
+    "stance": "Use selectively",
+    "view": "Monitor barrier distances closely and favour capital-protected structures while markets are volatile.",
+    "action": "monitor the barrier distance closely and favour capital-protected structures while markets are volatile",
+    "tags": [
+      "structured-notes-tech-underlying"
+    ]
+  },
+  {
+    "id": "hv-cash",
+    "assetClass": "Cash",
+    "stance": "Keep 5 to 10% liquidity",
+    "view": "Liquidity gives room to act in sell-offs without forced selling.",
+    "action": "keep 5 to 10% in cash to have room to act",
+    "tags": [
+      "usd-cash",
+      "sgd-cash"
+    ]
+  }
+]
