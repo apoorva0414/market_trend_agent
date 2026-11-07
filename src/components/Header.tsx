@@ -1,4 +1,5 @@
-import { Link, NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { SAMPLE_BANNER } from "../data";
 import { useApp } from "../state/AppContext";
 import { useTheme } from "../state/theme";
@@ -37,12 +38,52 @@ function ThemeToggle() {
   );
 }
 
+/** Click once to arm, click again within a few seconds to reset. No Cancel needed: it disarms by itself. */
+function ResetDemoButton() {
+  const { resetDemo } = useApp();
+  const navigate = useNavigate();
+  const [armed, setArmed] = useState(false);
+  useEffect(() => {
+    if (!armed) return;
+    const timer = window.setTimeout(() => setArmed(false), 4000);
+    return () => window.clearTimeout(timer);
+  }, [armed]);
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    if (!done) return;
+    const timer = window.setTimeout(() => setDone(false), 2500);
+    return () => window.clearTimeout(timer);
+  }, [done]);
+  const click = () => {
+    if (!armed) return setArmed(true);
+    resetDemo();
+    navigate("/");
+    setArmed(false);
+    setDone(true);
+  };
+  return (
+    <button
+      type="button"
+      onClick={click}
+      aria-live="polite"
+      className={`shrink-0 rounded border px-2 py-0.5 font-semibold transition-colors ${
+        armed ? "border-checkpoint bg-checkpoint text-bg" : "border-checkpoint/60 text-checkpoint hover:border-checkpoint"
+      }`}
+    >
+      {armed ? "Click again to reset" : done ? "Demo reset" : "Reset demo"}
+    </button>
+  );
+}
+
 export function Header() {
   const { rms, rm, setRmId } = useApp();
   return (
     <header className="z-30 sm:sticky sm:top-0">
-      <div role="note" className="border-b border-checkpoint/40 bg-banner px-4 py-1.5 text-center text-xs tracking-wide text-checkpoint">
-        {SAMPLE_BANNER}
+      <div className="flex items-center justify-center gap-x-3 gap-y-1 border-b border-checkpoint/40 bg-banner px-4 py-1.5 text-xs tracking-wide text-checkpoint">
+        <span role="note" className="min-w-0 text-center">
+          {SAMPLE_BANNER}
+        </span>
+        <ResetDemoButton />
       </div>
       <div className="border-b border-line bg-surface">
         <div className="mx-auto flex max-w-[1400px] flex-wrap items-center gap-x-4 px-4 sm:px-6 lg:flex-nowrap lg:gap-x-8">

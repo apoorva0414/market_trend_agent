@@ -91,7 +91,7 @@ Two RMs: **Kevin Tan** (Dedicated ARM) and **Sarah Lim** (Central ARM). The demo
 
 The app always opens on **Kevin Tan** (the Dedicated ARM, who has today's Client Alerts). Switching RM lasts only for the current browser tab.
 
-To repeat the demo: **Reset demo** on the Activity log page switches back to Kevin Tan and clears the chats, the activity log and today's review entries (the two seeded Eleanor Chua entries stay). **Clear log** empties only the activity log. Both ask for confirmation on the page.
+Demo data lasts for one browser tab: a refresh keeps your progress, and a new tab or a fresh visit starts clean. To start again in the same tab, click **Reset demo** in the amber strip at the top, then **Click again to reset** within a few seconds. It switches back to Kevin Tan, clears the chats and today's review entries, and puts the activity log back to the day's brief and alerts. The two seeded Eleanor Chua entries stay.
 
 ## What is in the box
 
@@ -141,14 +141,14 @@ Gains never alert while `includeGains` is false. When several conditions hold, t
 
 ### Log to Portfolio Review
 
-Opening a client from an alert drafts one `ReviewLogEntry` (in `localStorage`, next to the activity log). It updates itself when talking points are approved and shared. The RM can add an outcome, a one-line note and "Discuss at next review"; nothing is required. Outcome, note and the discuss flag are edited in the panel and saved only when the RM clicks **Log for next portfolio review** (or chooses "No contact needed"), which sets `loggedAt`. After that, **Update log** is enabled only when something has changed, and saves the change. **Upcoming reviews** (`/reviews`, `/reviews/:clientId`) lists the RM's clients by next review date and shows, for the selected client, the "To discuss" list, the period timeline and the JSON payload the Portfolio Review agent will receive. `/review-log` and `/portfolio-review/:clientId` redirect there.
+Opening a client from an alert drafts one `ReviewLogEntry` (in `sessionStorage`, next to the activity log). It updates itself when talking points are approved and shared. The RM can add an outcome, a one-line note and "Discuss at next review"; nothing is required. Outcome, note and the discuss flag are edited in the panel and saved only when the RM clicks **Log for next portfolio review** (or chooses "No contact needed"), which sets `loggedAt`. After that, **Update log** is enabled only when something has changed, and saves the change. **Upcoming reviews** (`/reviews`, `/reviews/:clientId`) lists the RM's clients by next review date and shows, for the selected client, the "To discuss" list, the period timeline and the JSON payload the Portfolio Review agent will receive. `/review-log` and `/portfolio-review/:clientId` redirect there.
 
 ## Choices made where the specs were open
 
 After update 3 (demo feedback):
 
 - **Two RMs**, one per ARM model. Daniel Wong and his clients were removed, so rule B (concentrated exposure) no longer fires in the demo; it stays in `alertRules.ts`, in "How alerts work" and in the tests.
-- **No demo controls or demo date.** The app is fixed at 14:00, with the 13:21 alert already in the inbox. **Reset demo** moved to the Activity log page.
+- **No demo controls or demo date.** The app is fixed at 14:00, with the 13:21 alert already in the inbox. **Reset demo** is in the amber sample-data strip on every page (click twice to confirm); the Activity log has no buttons.
 - **Review log became "Upcoming reviews"**: one master-detail screen replaces the Review log list and the separate Portfolio Review page, so the back button stays within one tab. Timeline entries are plain sentences with a small icon per step.
 - **"Log for next portfolio review"** is an explicit button in the client workspace. Drafted entries that were never logged are not sent to the Portfolio Review agent. Edits are saved with that button, and later with **Update log**.
 - **MarketPulse logo**: four slanted blue bars and the name, drawn as an inline SVG (`MarketPulseMark` in `src/components/Brand.tsx`, also `public/favicon.svg`). The Azimut logo file is still yours to add in `public/brand/`.
@@ -193,7 +193,7 @@ From the first build:
 
 - **One extra tag**, `called-usd-perpetual`, for the called bond.
 - **Thirds** for priority bands put the extra row in the earlier bands.
-- **Storage.** The activity log, last RM and review log are in `localStorage`; current chats are in `sessionStorage`.
+- **Storage.** All demo data (activity log, review log, selected RM, chats) is in `sessionStorage`, so it lasts for one browser tab. Only the light/dark choice is in `localStorage`. Demo data left in `localStorage` by earlier versions is removed on load.
 - **Sharing has no recipient.** There are no client contact details in the sample data.
 
 ## Not built

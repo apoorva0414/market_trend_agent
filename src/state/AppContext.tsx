@@ -14,6 +14,14 @@ const LOG_KEY = "dmb.activityLog.v5";
 const REVIEW_KEY = "dmb.reviewLog.v3";
 const SESSION_KEY = "dmb.session.v5";
 
+// Demo data lives for one browser tab: a refresh keeps it, a new tab or visit starts clean.
+// Older versions kept the logs in localStorage; clear those so they cannot come back.
+try {
+  for (const key of Object.keys(window.localStorage)) if (key.startsWith("dmb.") && key !== "dmb.theme") window.localStorage.removeItem(key);
+} catch {
+  // Storage can be blocked; nothing to clean up then.
+}
+
 /** Working state for the logged-in RM. Reset when the RM changes. */
 interface Session {
   rmId: string;
@@ -51,7 +59,6 @@ interface AppContextValue {
   changeReviewEntry: (id: string, change: (entry: ReviewLogEntry) => ReviewLogEntry) => void;
   log: LogEntry[];
   addLog: (entry: NewLogEntry) => void;
-  clearLog: () => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -105,9 +112,9 @@ function withSeeds(entries: ReviewLogEntry[]): ReviewLogEntry[] {
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [rmId, setRmIdState] = usePersistentState<string>("session", RM_KEY, () => INITIAL_RM_ID);
-  const [log, setLog] = usePersistentState<LogEntry[]>("local", LOG_KEY, () => readStored("local", LOG_KEY, []));
-  const [reviewLog, setReviewLog] = usePersistentState<ReviewLogEntry[]>("local", REVIEW_KEY, () =>
-    withSeeds(readStored<ReviewLogEntry[]>("local", REVIEW_KEY, [])),
+  const [log, setLog] = usePersistentState<LogEntry[]>("session", LOG_KEY, () => readStored("session", LOG_KEY, []));
+  const [reviewLog, setReviewLog] = usePersistentState<ReviewLogEntry[]>("session", REVIEW_KEY, () =>
+    withSeeds(readStored<ReviewLogEntry[]>("session", REVIEW_KEY, [])),
   );
   const [session, setSession] = usePersistentState<Session>("session", SESSION_KEY, () => {
     const stored = readStored<Session | null>("session", SESSION_KEY, null);
@@ -155,7 +162,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [rm.id, rm.name, setLog],
   );
 
-  const clearLog = useCallback(() => setLog([]), [setLog]);
 
   const logAlert = useCallback(
     (alert: Alert, key: string) => {
@@ -256,7 +262,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     changeReviewEntry,
     log,
     addLog,
-    clearLog,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { buttonSecondary } from "../components/ui";
 import { fmtTimestampSgt } from "../logic/format";
 import { useApp } from "../state/AppContext";
 import type { LogType } from "../types";
@@ -15,8 +13,7 @@ const TYPE_STYLE: Record<LogType, string> = {
 };
 
 export function ActivityLog() {
-  const { log, clearLog, resetDemo } = useApp();
-  const [confirming, setConfirming] = useState<"clear" | "reset" | null>(null);
+  const { log } = useApp();
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -25,38 +22,6 @@ export function ActivityLog() {
           <p className="mt-2 max-w-3xl text-sm text-muted">
             This log can also serve as evidence that discretionary clients were kept informed (to confirm with Compliance).
           </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {confirming ? (
-            <>
-              <span className="text-sm text-soft">{confirming === "reset" ? "Reset the demo? This goes back to the Dedicated ARM and clears the log, today's review entries and drafts." : "Clear the activity log?"}</span>
-              <button
-                type="button"
-                className={buttonSecondary}
-                onClick={() => {
-                  if (confirming === "reset") resetDemo();
-                  else clearLog();
-                  setConfirming(null);
-                }}
-              >
-                Yes, {confirming === "reset" ? "reset" : "clear"}
-              </button>
-              <button type="button" className={buttonSecondary} onClick={() => setConfirming(null)}>
-                Cancel
-              </button>
-            </>
-          ) : (
-            <>
-              {log.length > 0 && (
-                <button type="button" className={buttonSecondary} onClick={() => setConfirming("clear")}>
-                  Clear log
-                </button>
-              )}
-              <button type="button" className={buttonSecondary} onClick={() => setConfirming("reset")}>
-                Reset demo
-              </button>
-            </>
-          )}
         </div>
       </div>
 
@@ -123,7 +88,7 @@ export function ActivityLog() {
           </tbody>
         </table>
       </div>
-      <p className="mt-3 text-xs text-muted">Timestamps are the real time of each click, shown in Singapore time. The log is kept in this browser only.</p>
+      <p className="mt-3 text-xs text-muted">Timestamps are the real time of each click, shown in Singapore time. The log is kept in this browser tab only and starts again with Reset demo.</p>
     </div>
   );
 }
