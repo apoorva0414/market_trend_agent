@@ -104,13 +104,17 @@ interface Props {
   ctx: BuildContext;
   /** Which scan the documents were drafted from. A new scan starts a fresh workspace. */
   scanKey: string;
+  /** Called when the RM approves a version, so the Portfolio Review log can record it. */
+  onApproved?: (version: number) => void;
+  /** Called when the approved version is shared, with the channel used. */
+  onShared?: (channel: string, version: number) => void;
 }
 
 /**
  * Two-column workspace for one set of client talking points (update spec section 1):
  * the document on the left, the chat with the agent on the right, and the final check below it.
  */
-export function TalkingPointsWorkspace({ row, ctx, scanKey }: Props) {
+export function TalkingPointsWorkspace({ row, ctx, scanKey, onApproved, onShared }: Props) {
   const { workspaces, updateWorkspace, aiStatus, markAiOffline, addLog } = useApp();
   const { client } = row;
   const theme = row.primary.theme;
@@ -119,7 +123,7 @@ export function TalkingPointsWorkspace({ row, ctx, scanKey }: Props) {
   const doc = useMemo(() => buildTalkingPoints(row, ctx), [row, ctx]);
   const draft = useMemo(() => draftTalkingPoints(row, ctx), [row, ctx]);
   const context = useMemo(() => buildRefineContext(row, doc, ctx), [row, doc, ctx]);
-  const key = `${doc.id}@${scanKey}`;
+  const key = `${scanKey}:${client.id}`;
   const initial = useMemo(() => createWorkspace(doc.wording, theme.type, new Date().toISOString(), theme.stressTest), [doc, theme]);
   const ws: TpWorkspace = workspaces[key] ?? initial;
   const change = useCallback((fn: (current: TpWorkspace) => TpWorkspace) => updateWorkspace(key, initial, fn), [updateWorkspace, key, initial]);
@@ -185,7 +189,7 @@ export function TalkingPointsWorkspace({ row, ctx, scanKey }: Props) {
     }
   };
 
-  const log = (type: "Approved" | "Shared", detail: string) => addLog({ type, subject: client.name, theme: theme.title, detail });
+  const log = (type: "Talking points approved" | "Shared", detail: string) => addLog({ type, subject: client.name, theme: theme.title, detail });
 
   const onReviewed = (checked: boolean) => {
     if (!checked) {
@@ -193,14 +197,17 @@ export function TalkingPointsWorkspace({ row, ctx, scanKey }: Props) {
       return;
     }
     change((current) => approveVersion(current, viewing.n, rmName, new Date().toISOString()));
-    log("Approved", `Talking points approved · v${viewing.n} · ${rounds}`);
+    log("Talking points approved", `v${viewing.n} approved · ${rounds}`);
+    onApproved?.(viewing.n);
   };
 
   // Download, copy, email and WhatsApp only ever use the approved version.
   const shareModel = approved ? talkingPointsToDoc(doc, approved.wording, approved.n) : null;
   const shareMessage = approved ? talkingPointsMessage(doc, approved.wording, rmName) : null;
   const shared = (channel: "Email" | "WhatsApp" | "Download" | "Copy") => {
-    if (approved) log("Shared", `Shared via ${channel} · v${approved.n} · ${rounds}`);
+    if (!approved) return;
+    log("Shared", `Shared via ${channel} · v${approved.n} · ${rounds}`);
+    onShared?.(channel, approved.n);
   };
 
   const [downloading, setDownloading] = useState(false);
@@ -387,8 +394,8 @@ export function TalkingPointsWorkspace({ row, ctx, scanKey }: Props) {
               </div>
             ) : (
               <p className="mt-2 text-xs leading-relaxed text-muted">
-                Approving locks this version. Download and share stay off until then, and only the approved version is sent. The agent never contacts
-                clients.
+                These talking points are for your conversation. Sharing them with the client is optional and only possible after you approve a
+                version, which locks it. The agent never contacts clients.
               </p>
             )}
           </div>

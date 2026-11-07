@@ -121,8 +121,8 @@
     "assetClass": "Structured Product",
     "bank": "UBS",
     "currency": "USD",
-    "marketValueUsd": 900000,
-    "costBasisUsd": 964000,
+    "marketValueUsd": 750000,
+    "costBasisUsd": 803000,
     "tags": [
       "structured-notes-tech-underlying"
     ],
@@ -158,8 +158,8 @@
     "assetClass": "Fund",
     "bank": "UBS",
     "currency": "USD",
-    "marketValueUsd": 1700000,
-    "costBasisUsd": 1377000,
+    "marketValueUsd": 1850000,
+    "costBasisUsd": 1499000,
     "tags": []
   },
   {
@@ -468,8 +468,8 @@
     "assetClass": "Equity",
     "bank": "Julius Baer",
     "currency": "SGD",
-    "marketValueUsd": 500000,
-    "costBasisUsd": 475000,
+    "marketValueUsd": 400000,
+    "costBasisUsd": 380000,
     "tags": [
       "airlines"
     ]
@@ -480,8 +480,8 @@
     "assetClass": "Equity",
     "bank": "Julius Baer",
     "currency": "HKD",
-    "marketValueUsd": 300000,
-    "costBasisUsd": 306000,
+    "marketValueUsd": 200000,
+    "costBasisUsd": 204000,
     "tags": [
       "airlines"
     ]
@@ -526,8 +526,8 @@
     "assetClass": "Fund",
     "bank": "Julius Baer",
     "currency": "USD",
-    "marketValueUsd": 900000,
-    "costBasisUsd": 792000,
+    "marketValueUsd": 1100000,
+    "costBasisUsd": 968000,
     "tags": []
   },
   {
@@ -616,24 +616,12 @@
   },
   {
     "clientId": "c-k6",
-    "instrument": "Partner Bank A 5.875% USD Perpetual",
-    "assetClass": "Bond",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 800000,
-    "costBasisUsd": 822000,
-    "tags": [
-      "called-usd-perpetual"
-    ]
-  },
-  {
-    "clientId": "c-k6",
     "instrument": "Asia Investment Grade Credit Fund",
     "assetClass": "Fund",
     "bank": "DBS",
     "currency": "USD",
-    "marketValueUsd": 1200000,
-    "costBasisUsd": 1154000,
+    "marketValueUsd": 2000000,
+    "costBasisUsd": 1923000,
     "tags": [
       "asia-credit"
     ]
@@ -878,12 +866,12 @@
   },
   {
     "clientId": "c-s1",
-    "instrument": "Worst-of Autocallable Note on NVDA / MSFT / AVGO (60% barrier)",
+    "instrument": "Worst-of Autocallable Note on AAPL / GOOGL / AMZN (65% barrier)",
     "assetClass": "Structured Product",
     "bank": "UBS",
     "currency": "USD",
     "marketValueUsd": 1500000,
-    "costBasisUsd": 1603000,
+    "costBasisUsd": 1625000,
     "tags": [
       "structured-notes-tech-underlying"
     ],
@@ -1171,8 +1159,8 @@
     "assetClass": "Equity",
     "bank": "Julius Baer",
     "currency": "SGD",
-    "marketValueUsd": 500000,
-    "costBasisUsd": 523000,
+    "marketValueUsd": 200000,
+    "costBasisUsd": 209000,
     "tags": [
       "reits"
     ]
@@ -1183,8 +1171,8 @@
     "assetClass": "Equity",
     "bank": "Julius Baer",
     "currency": "SGD",
-    "marketValueUsd": 400000,
-    "costBasisUsd": 473000,
+    "marketValueUsd": 150000,
+    "costBasisUsd": 178000,
     "tags": [
       "reits"
     ]
@@ -1195,8 +1183,8 @@
     "assetClass": "Fund",
     "bank": "Julius Baer",
     "currency": "SGD",
-    "marketValueUsd": 500000,
-    "costBasisUsd": 529000,
+    "marketValueUsd": 100000,
+    "costBasisUsd": 106000,
     "tags": [
       "reits"
     ]
@@ -1207,8 +1195,8 @@
     "assetClass": "Fund",
     "bank": "Julius Baer",
     "currency": "USD",
-    "marketValueUsd": 900000,
-    "costBasisUsd": 822000,
+    "marketValueUsd": 1400000,
+    "costBasisUsd": 1279000,
     "tags": []
   },
   {
@@ -1217,8 +1205,8 @@
     "assetClass": "Fund",
     "bank": "Julius Baer",
     "currency": "USD",
-    "marketValueUsd": 1000000,
-    "costBasisUsd": 813000,
+    "marketValueUsd": 1300000,
+    "costBasisUsd": 1057000,
     "tags": []
   },
   {
@@ -1227,8 +1215,8 @@
     "assetClass": "Bond",
     "bank": "Julius Baer",
     "currency": "SGD",
-    "marketValueUsd": 700000,
-    "costBasisUsd": 678000,
+    "marketValueUsd": 850000,
+    "costBasisUsd": 824000,
     "tags": []
   },
   {
@@ -1585,667 +1573,6 @@
     "currency": "USD",
     "marketValueUsd": 500000,
     "costBasisUsd": 500000,
-    "tags": [
-      "usd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "Singapore Airlines Ltd",
-    "assetClass": "Equity",
-    "bank": "Standard Chartered",
-    "currency": "SGD",
-    "marketValueUsd": 4000000,
-    "costBasisUsd": 3918000,
-    "tags": [
-      "airlines"
-    ]
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "Energy Select Sector SPDR ETF",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 1500000,
-    "costBasisUsd": 1309000,
-    "tags": [
-      "energy"
-    ]
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "NVIDIA Corp",
-    "assetClass": "Equity",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 3000000,
-    "costBasisUsd": 1622000,
-    "tags": [
-      "us-tech"
-    ]
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "Invesco QQQ Trust (Nasdaq-100 ETF)",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 2500000,
-    "costBasisUsd": 1936000,
-    "tags": [
-      "us-tech"
-    ]
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "Tencent Holdings",
-    "assetClass": "Equity",
-    "bank": "Standard Chartered",
-    "currency": "HKD",
-    "marketValueUsd": 5000000,
-    "costBasisUsd": 5715000,
-    "tags": [
-      "china-equity"
-    ]
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "Tracker Fund of Hong Kong",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "HKD",
-    "marketValueUsd": 1500000,
-    "costBasisUsd": 1599000,
-    "tags": [
-      "hk-equity"
-    ]
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "Global Quality Equity Fund",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 9500000,
-    "costBasisUsd": 8078000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "Private Equity Feeder Fund",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 6000000,
-    "costBasisUsd": 5292000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "Physical Gold ETF",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 3000000,
-    "costBasisUsd": 2152000,
-    "tags": [
-      "gold"
-    ]
-  },
-  {
-    "clientId": "c-d1",
-    "instrument": "USD cash",
-    "assetClass": "Cash",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 6000000,
-    "costBasisUsd": 6000000,
-    "tags": [
-      "usd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d2",
-    "instrument": "US Treasury 3.00% 2052",
-    "assetClass": "Bond",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 1000000,
-    "costBasisUsd": 1110000,
-    "tags": [
-      "long-duration-usd-bonds"
-    ]
-  },
-  {
-    "clientId": "c-d2",
-    "instrument": "Long-Dated USD IG Corporate Bond Fund",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 800000,
-    "costBasisUsd": 834000,
-    "tags": [
-      "long-duration-usd-bonds"
-    ]
-  },
-  {
-    "clientId": "c-d2",
-    "instrument": "Short Duration USD Bond Fund",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 900000,
-    "costBasisUsd": 901000,
-    "tags": [
-      "short-duration-bonds"
-    ]
-  },
-  {
-    "clientId": "c-d2",
-    "instrument": "Singapore Government Securities 2.875% 2030",
-    "assetClass": "Bond",
-    "bank": "Standard Chartered",
-    "currency": "SGD",
-    "marketValueUsd": 1200000,
-    "costBasisUsd": 1164000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d2",
-    "instrument": "Global Multi-Asset Income Fund",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 900000,
-    "costBasisUsd": 875000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d2",
-    "instrument": "Physical Gold ETF",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 400000,
-    "costBasisUsd": 276000,
-    "tags": [
-      "gold"
-    ]
-  },
-  {
-    "clientId": "c-d2",
-    "instrument": "SGD cash",
-    "assetClass": "Cash",
-    "bank": "Standard Chartered",
-    "currency": "SGD",
-    "marketValueUsd": 800000,
-    "costBasisUsd": 800000,
-    "tags": [
-      "sgd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "Worst-of Autocallable Note on NVDA / MSFT / AVGO (60% barrier)",
-    "assetClass": "Structured Product",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 1000000,
-    "costBasisUsd": 1101000,
-    "tags": [
-      "structured-notes-tech-underlying"
-    ],
-    "barrierDistancePct": 10
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "Meta Platforms 5.75% 2064",
-    "assetClass": "Bond",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 900000,
-    "costBasisUsd": 946000,
-    "tags": [
-      "us-tech-credit"
-    ]
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "Oracle Corp 5.50% 2055",
-    "assetClass": "Bond",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 600000,
-    "costBasisUsd": 624000,
-    "tags": [
-      "us-tech-credit"
-    ]
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "Microsoft Corp",
-    "assetClass": "Equity",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 600000,
-    "costBasisUsd": 446000,
-    "tags": [
-      "us-tech"
-    ]
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "HSBC Holdings (HK)",
-    "assetClass": "Equity",
-    "bank": "DBS",
-    "currency": "HKD",
-    "marketValueUsd": 700000,
-    "costBasisUsd": 547000,
-    "tags": [
-      "hk-equity"
-    ]
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "Global Quality Equity Fund",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 3800000,
-    "costBasisUsd": 3163000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "Japan Equity Fund",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "USD",
-    "marketValueUsd": 1500000,
-    "costBasisUsd": 1308000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "India Equity Fund",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "USD",
-    "marketValueUsd": 1300000,
-    "costBasisUsd": 1038000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "Physical Gold ETF",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 700000,
-    "costBasisUsd": 502000,
-    "tags": [
-      "gold"
-    ]
-  },
-  {
-    "clientId": "c-d3",
-    "instrument": "USD cash",
-    "assetClass": "Cash",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 2400000,
-    "costBasisUsd": 2400000,
-    "tags": [
-      "usd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d4",
-    "instrument": "Tracker Fund of Hong Kong",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "HKD",
-    "marketValueUsd": 500000,
-    "costBasisUsd": 504000,
-    "tags": [
-      "hk-equity"
-    ]
-  },
-  {
-    "clientId": "c-d4",
-    "instrument": "AIA Group",
-    "assetClass": "Equity",
-    "bank": "DBS",
-    "currency": "HKD",
-    "marketValueUsd": 300000,
-    "costBasisUsd": 335000,
-    "tags": [
-      "hk-equity"
-    ]
-  },
-  {
-    "clientId": "c-d4",
-    "instrument": "CapitaLand Integrated Commercial Trust",
-    "assetClass": "Equity",
-    "bank": "DBS",
-    "currency": "SGD",
-    "marketValueUsd": 150000,
-    "costBasisUsd": 162000,
-    "tags": [
-      "reits"
-    ]
-  },
-  {
-    "clientId": "c-d4",
-    "instrument": "SPDR Straits Times Index ETF",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "SGD",
-    "marketValueUsd": 700000,
-    "costBasisUsd": 619000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d4",
-    "instrument": "Singapore Government Securities 2.875% 2030",
-    "assetClass": "Bond",
-    "bank": "DBS",
-    "currency": "SGD",
-    "marketValueUsd": 800000,
-    "costBasisUsd": 814000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d4",
-    "instrument": "Global Quality Equity Fund",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "USD",
-    "marketValueUsd": 700000,
-    "costBasisUsd": 576000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d4",
-    "instrument": "Physical Gold ETF",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "USD",
-    "marketValueUsd": 250000,
-    "costBasisUsd": 172000,
-    "tags": [
-      "gold"
-    ]
-  },
-  {
-    "clientId": "c-d4",
-    "instrument": "SGD cash",
-    "assetClass": "Cash",
-    "bank": "DBS",
-    "currency": "SGD",
-    "marketValueUsd": 500000,
-    "costBasisUsd": 500000,
-    "tags": [
-      "sgd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d5",
-    "instrument": "India Equity Fund",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 2000000,
-    "costBasisUsd": 1547000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d5",
-    "instrument": "Global Quality Equity Fund",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 2300000,
-    "costBasisUsd": 1873000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d5",
-    "instrument": "Japan Equity Fund",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 1000000,
-    "costBasisUsd": 853000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d5",
-    "instrument": "European Equity Fund",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 900000,
-    "costBasisUsd": 823000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d5",
-    "instrument": "Physical Gold ETF",
-    "assetClass": "Fund",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 600000,
-    "costBasisUsd": 430000,
-    "tags": [
-      "gold"
-    ]
-  },
-  {
-    "clientId": "c-d5",
-    "instrument": "USD cash",
-    "assetClass": "Cash",
-    "bank": "Standard Chartered",
-    "currency": "USD",
-    "marketValueUsd": 1000000,
-    "costBasisUsd": 1000000,
-    "tags": [
-      "usd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d6",
-    "instrument": "Singapore Government Securities 2.875% 2030",
-    "assetClass": "Bond",
-    "bank": "DBS",
-    "currency": "SGD",
-    "marketValueUsd": 1600000,
-    "costBasisUsd": 1573000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d6",
-    "instrument": "SGD fixed deposit (6 months)",
-    "assetClass": "Cash",
-    "bank": "DBS",
-    "currency": "SGD",
-    "marketValueUsd": 900000,
-    "costBasisUsd": 900000,
-    "tags": [
-      "sgd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d6",
-    "instrument": "Global Multi-Asset Income Fund",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "USD",
-    "marketValueUsd": 800000,
-    "costBasisUsd": 788000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d6",
-    "instrument": "SPDR Straits Times Index ETF",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "SGD",
-    "marketValueUsd": 400000,
-    "costBasisUsd": 342000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d6",
-    "instrument": "Physical Gold ETF",
-    "assetClass": "Fund",
-    "bank": "DBS",
-    "currency": "USD",
-    "marketValueUsd": 300000,
-    "costBasisUsd": 206000,
-    "tags": [
-      "gold"
-    ]
-  },
-  {
-    "clientId": "c-d6",
-    "instrument": "SGD cash",
-    "assetClass": "Cash",
-    "bank": "DBS",
-    "currency": "SGD",
-    "marketValueUsd": 400000,
-    "costBasisUsd": 400000,
-    "tags": [
-      "sgd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d7",
-    "instrument": "Japan Equity Fund",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 3000000,
-    "costBasisUsd": 2504000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d7",
-    "instrument": "Global Quality Equity Fund",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 2500000,
-    "costBasisUsd": 1991000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d7",
-    "instrument": "Global Multi-Asset Income Fund",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 1500000,
-    "costBasisUsd": 1452000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d7",
-    "instrument": "Physical Gold ETF",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 1200000,
-    "costBasisUsd": 858000,
-    "tags": [
-      "gold"
-    ]
-  },
-  {
-    "clientId": "c-d7",
-    "instrument": "USD cash",
-    "assetClass": "Cash",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 1800000,
-    "costBasisUsd": 1800000,
-    "tags": [
-      "usd-cash"
-    ]
-  },
-  {
-    "clientId": "c-d7",
-    "instrument": "Short Duration USD Bond Fund",
-    "assetClass": "Fund",
-    "bank": "UBS",
-    "currency": "USD",
-    "marketValueUsd": 200000,
-    "costBasisUsd": 193000,
-    "tags": [
-      "short-duration-bonds"
-    ]
-  },
-  {
-    "clientId": "c-d8",
-    "instrument": "Global Quality Equity Fund",
-    "assetClass": "Fund",
-    "bank": "Bank of Singapore",
-    "currency": "USD",
-    "marketValueUsd": 2200000,
-    "costBasisUsd": 1732000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d8",
-    "instrument": "European Equity Fund",
-    "assetClass": "Fund",
-    "bank": "Bank of Singapore",
-    "currency": "USD",
-    "marketValueUsd": 1000000,
-    "costBasisUsd": 885000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d8",
-    "instrument": "India Equity Fund",
-    "assetClass": "Fund",
-    "bank": "Bank of Singapore",
-    "currency": "USD",
-    "marketValueUsd": 800000,
-    "costBasisUsd": 615000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d8",
-    "instrument": "Private Equity Feeder Fund",
-    "assetClass": "Fund",
-    "bank": "Bank of Singapore",
-    "currency": "USD",
-    "marketValueUsd": 600000,
-    "costBasisUsd": 531000,
-    "tags": []
-  },
-  {
-    "clientId": "c-d8",
-    "instrument": "Physical Gold ETF",
-    "assetClass": "Fund",
-    "bank": "Bank of Singapore",
-    "currency": "USD",
-    "marketValueUsd": 400000,
-    "costBasisUsd": 275000,
-    "tags": [
-      "gold"
-    ]
-  },
-  {
-    "clientId": "c-d8",
-    "instrument": "USD cash",
-    "assetClass": "Cash",
-    "bank": "Bank of Singapore",
-    "currency": "USD",
-    "marketValueUsd": 600000,
-    "costBasisUsd": 600000,
     "tags": [
       "usd-cash"
     ]

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "RL-20260819-c-k1-seed",
+    "clientId": "c-k1",
+    "rmId": "rm-kevin",
+    "alertId": "A-20260819-kevin-0900",
+    "createdAt": "2026-08-19T09:12:00+08:00",
+    "updatedAt": "2026-08-20T16:40:00+08:00",
+    "trigger": {
+      "kind": "material-impact",
+      "themeId": "theme-us-yields-aug",
+      "reason": "Estimated impact −1.1% of AUM from US jobs data pushes long yields higher (alert threshold −1.0%)",
+      "summary": "US jobs data pushed long yields higher, hitting long-duration USD bonds and REITs"
+    },
+    "holdingsSnapshot": [
+      {
+        "instrument": "US Treasury 4.25% 2046",
+        "bank": "UBS",
+        "marketValueUsd": 1960000,
+        "estImpactUsd": -58800
+      },
+      {
+        "instrument": "Long-Dated USD IG Corporate Bond Fund",
+        "bank": "DBS",
+        "marketValueUsd": 1290000,
+        "estImpactUsd": -38700
+      },
+      {
+        "instrument": "CapitaLand Integrated Commercial Trust",
+        "bank": "DBS",
+        "marketValueUsd": 720000,
+        "estImpactUsd": -25200
+      }
+    ],
+    "talkingPoints": {
+      "status": "shared",
+      "approvedVersion": 2,
+      "sharedVia": [
+        "Email"
+      ],
+      "sharedAt": "2026-08-19T10:05:00+08:00"
+    },
+    "outcome": "Contacted: no concerns",
+    "rmNote": "Comfortable holding through the volatility. Prefers updates by email.",
+    "discussAtNextReview": false,
+    "nextReviewDate": "2027-01-15",
+    "loggedAt": "2026-08-20T16:40:00+08:00"
+  },
+  {
+    "id": "RL-20260923-c-k1-seed",
+    "clientId": "c-k1",
+    "rmId": "rm-kevin",
+    "alertId": "A-20260923-kevin-0900",
+    "createdAt": "2026-09-23T09:20:00+08:00",
+    "updatedAt": "2026-09-23T15:10:00+08:00",
+    "trigger": {
+      "kind": "concentrated-exposure",
+      "themeId": "theme-sreit-rates-sep",
+      "reason": "10% of AUM exposed to Singapore REITs sell off on refinancing worries, move −3.5% (alert threshold: 10% exposure and −3% move)",
+      "summary": "Singapore REITs sold off on refinancing worries"
+    },
+    "holdingsSnapshot": [
+      {
+        "instrument": "CapitaLand Integrated Commercial Trust",
+        "bank": "DBS",
+        "marketValueUsd": 705000,
+        "estImpactUsd": -24700
+      },
+      {
+        "instrument": "Mapletree Logistics Trust",
+        "bank": "DBS",
+        "marketValueUsd": 515000,
+        "estImpactUsd": -18000
+      }
+    ],
+    "talkingPoints": {
+      "status": "approved",
+      "approvedVersion": 1
+    },
+    "outcome": "Contacted: concerns raised",
+    "rmNote": "Worried about REIT income if rates stay high. Asked whether to reduce REITs.",
+    "discussAtNextReview": true,
+    "nextReviewDate": "2027-01-15",
+    "loggedAt": "2026-09-23T15:10:00+08:00"
+  }
+]

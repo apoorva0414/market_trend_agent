@@ -67,7 +67,8 @@ export const THEME_ZH: Record<string, ThemeZh> = {
     clientSummary: ["中国宣布了一项规模超出预期的方案，以支持消费和房地产市场。", "中国内地和香港股市因此大幅上涨。"],
     clientTalkingPoint: "以往的刺激行情曾因落实缓慢而回落，因此我们会建议分步加仓或减仓，而不是一次性大幅调整。",
   },
-  "theme-perp-call": {
+  // Keyed by the position event id: its narrative is drafted like a theme.
+  "pe-perp-call": {
     title: "合作银行对一只美元永续债发出赎回通知",
     clientSummary: [
       "合作银行A宣布将于2026年11月12日按面值全额赎回其票息5.875%的美元永续债。",

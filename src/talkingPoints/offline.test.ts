@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { data, DEMO_DATE } from "../data";
 import { buildRefineContext, buildTalkingPoints, draftTalkingPoints, wordingOf } from "../documents/talkingPoints";
-import { runScan } from "../logic/scan";
+import { bookStateAt } from "../logic/book";
 import { isChinese, splitSentences } from "../logic/text";
 import type { QuickAction, RefineRequest, RefineResponse } from "../types";
 import { allowedNumbers, enforceLockedFigures, FIGURES_NOTICE, REFUSAL_REPLY } from "./lockedFacts";
@@ -10,8 +10,8 @@ import { runRound } from "./refine";
 
 const rm = data.rms[0];
 const ctx = { rm, date: DEMO_DATE };
-const scan = runScan({ date: DEMO_DATE, rmId: rm.id, upTo: "morning" });
-const row = scan.clients.find((r) => r.primary.nextStep.flag === "Barrier risk")!; // Rajesh Menon, View theme
+const scan = bookStateAt({ date: DEMO_DATE, rmId: rm.id, at: "08:30" });
+const row = scan.clients.find((r) => r.primary.flag === "Barrier risk")!; // Rajesh Menon, View theme
 const doc = buildTalkingPoints(row, ctx);
 const draft = draftTalkingPoints(row, ctx);
 const context = buildRefineContext(row, doc, ctx);
@@ -46,7 +46,7 @@ describe("offline canned rewrites (1.5)", () => {
     expect(wording.talkingPoints).toHaveLength(2);
     expect(wording.nextSteps).toHaveLength(1);
     expect(splitSentences(wording.summary)).toHaveLength(2);
-    expect(wording.summary).toContain("−USD 64.5k");
+    expect(wording.summary).toContain("−USD 55.5k");
   });
 
   it("More conservative tone adds a caution and makes the next steps less urgent", () => {
@@ -81,7 +81,7 @@ describe("offline canned rewrites (1.5)", () => {
     const demo = apply(v1, "conservative", "whatsapp", "mandarin");
     expect(demo.talkingPoints).toHaveLength(2);
     expect(demo.nextSteps).toEqual(["您不必现在就作决定。我们先一起梳理该票据到期时的各种情形。"]);
-    expect(demo.summary).toContain("−USD 64.5k（占总资产的 −0.81%）");
+    expect(demo.summary).toContain("−USD 55.5k（占总资产的 −0.69%）");
 
     const reversed = apply(v1, "mandarin", "personal", "conservative", "next", "shorter");
     expect(reversed.summary.startsWith("自我们10月2日上次联系以来")).toBe(true);
@@ -110,7 +110,7 @@ describe("offline canned rewrites (1.5)", () => {
     const actions = QUICK_ACTIONS.map((a) => a.id);
     for (const rmEntry of data.rms) {
       for (const upTo of ["morning", "intraday"] as const) {
-        for (const client of runScan({ date: DEMO_DATE, rmId: rmEntry.id, upTo }).clients) {
+        for (const client of bookStateAt({ date: DEMO_DATE, rmId: rmEntry.id, at: upTo === "morning" ? "08:30" : "23:59" }).clients) {
           const c = { rm: rmEntry, date: DEMO_DATE };
           const d = buildTalkingPoints(client, c);
           const clientDraft = draftTalkingPoints(client, c);

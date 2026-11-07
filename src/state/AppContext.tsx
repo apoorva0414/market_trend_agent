@@ -1,50 +1,24 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { type AiStatus, fetchAiStatus } from "../ai/client";
-import { data, DEMO_DATE } from "../data";
-import { NO_PROFILE } from "../documents/builders";
-import { defaultAction } from "../logic/nextStep";
-import { runScan } from "../logic/scan";
-import type {
-  ActItem,
-  ClientAction,
-  Handoff,
-  LogEntry,
-  RankedClient,
-  Rm,
-  ScanBatch,
-  ScanResult,
-  TpWorkspace,
-} from "../types";
+import { data, DEMO_DATE, DEMO_NOW, SEED_REVIEW_LOG } from "../data";
+import { bookStateAt } from "../logic/book";
+import { runDailyBrief } from "../logic/brief";
+import { simulateMonitor } from "../logic/monitor";
+import { ensureReviewEntry, updateEntry, withLogged } from "../logic/reviewLog";
+import type { Alert, AlertTrigger, BookState, DailyBrief, LogEntry, MonitorEvaluation, RankedClient, ReviewLogEntry, Rm, TpWorkspace } from "../types";
 import { readStored, usePersistentState, writeStored } from "./storage";
 
 const RM_KEY = "dmb.rmId";
-const LOG_KEY = "dmb.activityLog";
-// The stored shapes changed with update 1 (RM context, chat workspaces), so these keys carry a version.
-const HANDOFF_KEY = "dmb.handoffs.v2";
-const SESSION_KEY = "dmb.session.v2";
-
-export interface ProspectPick {
-  checked: boolean;
-  profile: string;
-}
-
-export interface ActSession {
-  upTo: ScanBatch;
-  items: ActItem[];
-}
+// Stored shapes change between updates, so these keys carry a version.
+const LOG_KEY = "dmb.activityLog.v5";
+const REVIEW_KEY = "dmb.reviewLog.v3";
+const SESSION_KEY = "dmb.session.v5";
 
 /** Working state for the logged-in RM. Reset when the RM changes. */
 interface Session {
   rmId: string;
-  upTo: ScanBatch;
-  overrides: Record<string, ClientAction>;
-  picks: Record<string, ProspectPick>;
-  act: ActSession | null;
-  /** "Add context for the next agent", keyed by hand-off id. */
-  notes: Record<string, string>;
-  /** Talking-points chat: versions, thread and approval, keyed by document id. */
+  /** Talking-points chat: versions, thread and approval, keyed by alert and client. */
   workspaces: Record<string, TpWorkspace>;
-  noActionAt: string | null;
 }
 
 type NewLogEntry = Omit<LogEntry, "id" | "timestamp" | "rmId" | "rmName">;
@@ -54,30 +28,27 @@ interface AppContextValue {
   rm: Rm;
   setRmId: (id: string) => void;
   date: string;
-  upTo: ScanBatch;
-  scan: ScanResult;
-  morningScan: ScanResult;
-  scanNow: () => void;
-  resetToMorning: () => void;
-  actionFor: (row: RankedClient) => ClientAction;
-  setClientAction: (clientId: string, action: ClientAction) => void;
-  prospectPicks: Record<string, ProspectPick>;
-  setProspectPick: (themeId: string, patch: Partial<ProspectPick>) => void;
-  selectedItems: ActItem[];
-  commitSelections: () => void;
-  logNoAction: () => void;
-  noActionAt: string | null;
-  act: ActSession | null;
-  notes: Record<string, string>;
-  setNote: (id: string, text: string) => void;
+  /** Output of the 08:30 brief job, delivered at 09:00. */
+  brief: DailyBrief;
+  /** Client Alerts the monitor has sent so far today, oldest first. */
+  alerts: Alert[];
+  /** Every item the monitor has evaluated so far today. */
+  evaluations: MonitorEvaluation[];
+  /** The book as it stood when an alert was detected: its client rows and talking points. */
+  stateForAlert: (alert: Alert) => BookState;
+  /** Clears chats, the activity log and the review log (back to the seeded entries) for every RM. */
+  resetDemo: () => void;
   workspaces: Record<string, TpWorkspace>;
-  /** Applies a change to one workspace. `initial` is used the first time a workspace is touched. */
   updateWorkspace: (key: string, initial: TpWorkspace, change: (current: TpWorkspace) => TpWorkspace) => void;
-  /** "live" only when an API endpoint is configured, reachable and has a key. Otherwise the chat runs offline. */
   aiStatus: AiStatus;
   markAiOffline: () => void;
-  handoffs: Record<string, Handoff>;
-  saveHandoff: (handoff: Handoff) => void;
+  reviewLog: ReviewLogEntry[];
+  /** Drafts the Portfolio Review log entry the first time the RM opens a client from an alert. */
+  openClientWorkspace: (alert: Alert, trigger: AlertTrigger, row: RankedClient | undefined) => void;
+  /** "Log for next portfolio review": the entry now reaches the client's next scheduled review. */
+  /** Saves the RM's edits (if any) to the entry and logs it for the next review. Calling it again saves an update. */
+  logForReview: (entryId: string, change?: (entry: ReviewLogEntry) => ReviewLogEntry) => void;
+  changeReviewEntry: (id: string, change: (entry: ReviewLogEntry) => ReviewLogEntry) => void;
   log: LogEntry[];
   addLog: (entry: NewLogEntry) => void;
   clearLog: () => void;
@@ -90,7 +61,7 @@ function isRm(id: string | null): id is string {
 }
 
 /**
- * The exported email previews link to #/brief?rm=<id>, which selects that RM on arrival.
+ * The exported Client Alerts link to #/alerts/<id>?rm=<id>, which selects that RM on arrival.
  * With HashRouter the query sits inside the hash, so it is read from there.
  */
 function resolveInitialRmId(): string {
@@ -119,18 +90,20 @@ function resolveInitialRmId(): string {
 const INITIAL_RM_ID = resolveInitialRmId();
 
 function blankSession(rmId: string): Session {
-  return { rmId, upTo: "morning", overrides: {}, picks: {}, act: null, notes: {}, workspaces: {}, noActionAt: null };
+  return { rmId, workspaces: {} };
 }
 
-function itemKey(item: ActItem): string {
-  return item.kind === "proposal" ? `${item.kind}:${item.themeId}:${item.profile}` : `${item.kind}:${item.clientId}`;
+/** The seeded history is always present: on first run, and again after Reset demo. */
+function withSeeds(entries: ReviewLogEntry[]): ReviewLogEntry[] {
+  const ids = new Set(entries.map((e) => e.id));
+  return [...SEED_REVIEW_LOG.filter((e) => !ids.has(e.id)), ...entries];
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [rmId, setRmIdState] = usePersistentState<string>("local", RM_KEY, () => INITIAL_RM_ID);
   const [log, setLog] = usePersistentState<LogEntry[]>("local", LOG_KEY, () => readStored("local", LOG_KEY, []));
-  const [handoffs, setHandoffs] = usePersistentState<Record<string, Handoff>>("local", HANDOFF_KEY, () =>
-    readStored("local", HANDOFF_KEY, {}),
+  const [reviewLog, setReviewLog] = usePersistentState<ReviewLogEntry[]>("local", REVIEW_KEY, () =>
+    withSeeds(readStored<ReviewLogEntry[]>("local", REVIEW_KEY, [])),
   );
   const [session, setSession] = usePersistentState<Session>("session", SESSION_KEY, () => {
     const stored = readStored<Session | null>("session", SESSION_KEY, null);
@@ -138,7 +111,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
 
   const rm = data.rms.find((r) => r.id === rmId) ?? data.rms[0];
-  const { upTo } = session;
 
   const [aiStatus, setAiStatus] = useState<AiStatus>("checking");
   useEffect(() => {
@@ -152,11 +124,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
   const markAiOffline = useCallback(() => setAiStatus("offline"), []);
 
-  const morningScan = useMemo(() => runScan({ date: DEMO_DATE, rmId: rm.id, upTo: "morning" }), [rm.id]);
-  const scan = useMemo(
-    () => (upTo === "morning" ? morningScan : runScan({ date: DEMO_DATE, rmId: rm.id, upTo })),
-    [rm.id, upTo, morningScan],
-  );
+  const brief = useMemo(() => runDailyBrief({ date: DEMO_DATE, rmId: rm.id }), [rm.id]);
+  const monitor = useMemo(() => simulateMonitor({ date: DEMO_DATE, rmId: rm.id, until: DEMO_NOW }), [rm.id]);
+  const stateForAlert = useCallback((alert: Alert) => bookStateAt({ date: DEMO_DATE, rmId: rm.id, at: alert.time }), [rm.id]);
 
   const setRmId = useCallback(
     (id: string) => {
@@ -176,131 +146,109 @@ export function AppProvider({ children }: { children: ReactNode }) {
         rmId: rm.id,
         rmName: rm.name,
       };
-      setLog((previous) => [full, ...previous]);
+      setLog((previous) => (full.key && previous.some((e) => e.key === full.key) ? previous : [full, ...previous]));
     },
     [rm.id, rm.name, setLog],
   );
 
   const clearLog = useCallback(() => setLog([]), [setLog]);
 
-  const scanNow = useCallback(() => {
-    const result = runScan({ date: DEMO_DATE, rmId: rm.id, upTo: "intraday" });
-    const adHoc = result.record.adHoc;
-    // A re-rank must never silently drop a client the RM had already selected, so current
-    // selections are pinned. Rows left on Skip still follow the new ranking's defaults.
-    setSession((s) => {
-      const overrides = { ...s.overrides };
-      for (const row of scan.clients) {
-        const action = overrides[row.client.id] ?? defaultAction(row);
-        if (action !== "Skip") overrides[row.client.id] = action;
-      }
-      return { ...s, upTo: "intraday", overrides };
-    });
+  const logAlert = useCallback(
+    (alert: Alert, key: string) => {
+      const names = alert.triggers.map((t) => data.clients.find((c) => c.id === t.clientId)?.name).join(", ");
+      addLog({
+        type: "Alert sent",
+        key,
+        subject: names,
+        theme: alert.triggers.map((t) => t.reason).join("; "),
+        detail: `Client Alert at ${alert.time} SGT · ${alert.triggers.length} ${alert.triggers.length === 1 ? "client" : "clients"}`,
+      });
+    },
+    [addLog],
+  );
+
+  // Bumped by resetDemo so the day's brief and alerts are recorded again in the cleared log.
+  const [resetCount, setResetCount] = useState(0);
+
+  // The brief and every alert sent so far today are recorded once each.
+  useEffect(() => {
     addLog({
-      type: "Scan",
+      type: "Brief delivered",
+      key: `brief-${DEMO_DATE}-${rm.id}`,
       subject: "All clients",
-      theme: result.themes.filter((t) => t.status !== "unchanged").map((t) => t.shortTitle).join(", ") || "No change",
-      detail: adHoc ? `Ad hoc scan ${adHoc.at} SGT · ${adHoc.newItems} new items · ${adHoc.affectedClientCount} clients affected` : "Ad hoc scan",
+      theme: `${brief.themes.length} themes`,
+      detail: "MarketPulse Daily Brief delivered at 09:00 SGT (read only)",
     });
-  }, [rm.id, scan, setSession, addLog]);
+    for (const alert of monitor.alerts) logAlert(alert, alert.id);
+  }, [addLog, logAlert, rm.id, brief, monitor.alerts, resetCount]);
 
-  const resetToMorning = useCallback(() => setSession((s) => ({ ...s, upTo: "morning" })), [setSession]);
+  // A clean slate for a new demo: every RM's chats, the activity log, and the review log back to its seeds.
+  const resetDemo = useCallback(() => {
+    setSession(blankSession(rm.id));
+    setReviewLog(withSeeds([]));
+    setLog([]);
+    setResetCount((n) => n + 1);
+  }, [rm.id, setSession, setReviewLog, setLog]);
 
-  const actionFor = useCallback(
-    (row: RankedClient): ClientAction => session.overrides[row.client.id] ?? defaultAction(row),
-    [session.overrides],
+  const openClientWorkspace = useCallback(
+    (alert: Alert, trigger: AlertTrigger, row: RankedClient | undefined) => {
+      const client = data.clients.find((c) => c.id === trigger.clientId);
+      if (!client) return;
+      // Dated on the demo day, at the real time of day in Singapore.
+      const time = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Singapore" }).format(new Date());
+      const createdAt = `${alert.date}T${time}+08:00`;
+      setReviewLog((entries) => ensureReviewEntry(entries, alert, trigger, row, client.nextReviewDate, createdAt).entries);
+    },
+    [setReviewLog],
   );
 
-  const setClientAction = useCallback(
-    (clientId: string, action: ClientAction) =>
-      setSession((s) => ({ ...s, overrides: { ...s.overrides, [clientId]: action }, noActionAt: null })),
-    [setSession],
+  const logForReview = useCallback(
+    (entryId: string, change: (entry: ReviewLogEntry) => ReviewLogEntry = (e) => e) => {
+      const entry = reviewLog.find((e) => e.id === entryId);
+      if (!entry) return;
+      const client = data.clients.find((c) => c.id === entry.clientId);
+      const now = new Date().toISOString();
+      setReviewLog((entries) => updateEntry(entries, entryId, (e) => withLogged(change(e), now), now));
+      addLog({
+        type: "Logged to Portfolio Review",
+        key: entry.loggedAt ? undefined : `logged-${entryId}`,
+        subject: client?.name ?? entry.clientId,
+        theme: entry.trigger.reason,
+        detail: entry.loggedAt ? `Log updated for the review on ${entry.nextReviewDate}` : `Logged for the review on ${entry.nextReviewDate}`,
+      });
+    },
+    [reviewLog, setReviewLog, addLog],
   );
 
-  const setProspectPick = useCallback(
-    (themeId: string, patch: Partial<ProspectPick>) =>
-      setSession((s) => {
-        const current: ProspectPick = s.picks[themeId] ?? { checked: false, profile: "" };
-        return { ...s, picks: { ...s.picks, [themeId]: { ...current, ...patch } }, noActionAt: null };
-      }),
-    [setSession],
+  const changeReviewEntry = useCallback(
+    (id: string, change: (entry: ReviewLogEntry) => ReviewLogEntry) => setReviewLog((entries) => updateEntry(entries, id, change, new Date().toISOString())),
+    [setReviewLog],
   );
 
-  const selectedItems = useMemo(() => {
-    const items: ActItem[] = [];
-    for (const row of scan.clients) {
-      const action = actionFor(row);
-      if (action === "Talking points") items.push({ kind: "talking-points", clientId: row.client.id });
-      if (action === "Portfolio review") items.push({ kind: "portfolio-review", clientId: row.client.id });
-    }
-    for (const prospect of scan.prospectThemes) {
-      const pick = session.picks[prospect.theme.id];
-      if (pick?.checked) items.push({ kind: "proposal", themeId: prospect.theme.id, profile: pick.profile.trim() });
-    }
-    return items;
-  }, [scan, actionFor, session.picks]);
-
-  const commitSelections = useCallback(() => {
-    // Log each decision once, even if the RM goes back to the brief and continues again.
-    const alreadyLogged = new Set(session.act && session.act.upTo === upTo ? session.act.items.map(itemKey) : []);
-    for (const item of selectedItems) {
-      if (alreadyLogged.has(itemKey(item))) continue;
-      if (item.kind === "proposal") {
-        const theme = scan.themes.find((t) => t.id === item.themeId);
-        addLog({ type: "Prospect", subject: item.profile || NO_PROFILE, theme: theme?.title ?? "", detail: "Decision: explore this theme for a prospect" });
-      } else {
-        const row = scan.clients.find((r) => r.client.id === item.clientId);
-        if (!row) continue;
-        addLog(
-          item.kind === "talking-points"
-            ? { type: "Contacted", subject: row.client.name, theme: row.primary.theme.title, detail: "Decision: contact with talking points" }
-            : { type: "Portfolio review", subject: row.client.name, theme: row.primary.theme.title, detail: "Decision: hand off for a portfolio review" },
-        );
-      }
-    }
-    setSession((s) => ({ ...s, act: { upTo, items: selectedItems }, noActionAt: null }));
-  }, [session.act, upTo, selectedItems, scan, addLog, setSession]);
-
-  const logNoAction = useCallback(() => {
-    addLog({ type: "No action", subject: "All clients", theme: "All themes", detail: `Reviewed the ${upTo === "morning" ? "9 AM brief" : "13:45 ad hoc scan"} and decided no action today` });
-    setSession((s) => ({ ...s, noActionAt: new Date().toISOString() }));
-  }, [addLog, setSession, upTo]);
-
-  const setNote = useCallback((id: string, text: string) => setSession((s) => ({ ...s, notes: { ...s.notes, [id]: text } })), [setSession]);
   const updateWorkspace = useCallback(
     (key: string, initial: TpWorkspace, change: (current: TpWorkspace) => TpWorkspace) =>
       setSession((s) => ({ ...s, workspaces: { ...s.workspaces, [key]: change(s.workspaces[key] ?? initial) } })),
     [setSession],
   );
-  const saveHandoff = useCallback((handoff: Handoff) => setHandoffs((h) => ({ ...h, [handoff.handoffId]: handoff })), [setHandoffs]);
 
   const value: AppContextValue = {
     rms: data.rms,
     rm,
     setRmId,
     date: DEMO_DATE,
-    upTo,
-    scan,
-    morningScan,
-    scanNow,
-    resetToMorning,
-    actionFor,
-    setClientAction,
-    prospectPicks: session.picks,
-    setProspectPick,
-    selectedItems,
-    commitSelections,
-    logNoAction,
-    noActionAt: session.noActionAt,
-    act: session.act,
-    notes: session.notes,
-    setNote,
+    brief,
+    alerts: monitor.alerts,
+    evaluations: monitor.evaluations,
+    stateForAlert,
+    resetDemo,
     workspaces: session.workspaces,
     updateWorkspace,
     aiStatus,
     markAiOffline,
-    handoffs,
-    saveHandoff,
+    reviewLog,
+    openClientWorkspace,
+    logForReview,
+    changeReviewEntry,
     log,
     addLog,
     clearLog,

@@ -1,5 +1,12 @@
 [
-  { "id": "rm-kevin", "name": "Kevin Tan", "arm_model": "Dedicated ARM" },
-  { "id": "rm-sarah", "name": "Sarah Lim", "arm_model": "Central ARM" },
-  { "id": "rm-daniel", "name": "Daniel Wong", "arm_model": "Central ARM" }
+  {
+    "id": "rm-kevin",
+    "name": "Kevin Tan",
+    "arm_model": "Dedicated ARM"
+  },
+  {
+    "id": "rm-sarah",
+    "name": "Sarah Lim",
+    "arm_model": "Central ARM"
+  }
 ]

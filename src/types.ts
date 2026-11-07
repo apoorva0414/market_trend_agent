@@ -44,6 +44,8 @@ export interface Client {
   prefersFrequentUpdates: boolean;
   lastContactDate: string;
   notes?: string;
+  /** Next scheduled six-monthly portfolio review. */
+  nextReviewDate: string;
 }
 
 export interface Holding {
@@ -81,15 +83,15 @@ export interface Theme {
   title: string;
   shortTitle: string;
   type: ThemeType;
-  batch: ScanBatch;
+  /** Few words naming the cause, for Client Alert subjects: "US rate move". */
+  alertCause: string;
+  /** Phrases for the brief's summary sentence: "A rates-driven morning: yields up after Fed signals, with oil also in focus." */
+  briefTone: string;
+  briefHeadline: string;
+  briefMention: string;
   whatHappened: string;
   whyItMatters: string;
   affectedTags: TagMove[];
-  prospectAngle: string;
-  prospectSuits: string;
-  /** Always shown in "Themes for prospects", and featured in the 9 AM email. */
-  prospectFeatured?: boolean;
-  relevantProductIds: string[];
   /** Plain-language version of what happened, for client-shareable text. */
   clientSummary: string;
   clientTalkingPoint: string;
@@ -98,8 +100,6 @@ export interface Theme {
   clientNextStepDiscretionary?: string;
   /** View themes only: what the RM should stress-test before sharing. */
   stressTest?: string;
-  keyRisks: string[];
-  likelyQuestions: string[];
   /** Applied when an intraday news item for this theme is picked up by an ad hoc scan. */
   intradayUpdate?: {
     note: string;
@@ -107,13 +107,26 @@ export interface Theme {
   };
 }
 
-export interface Product {
+export type PositionEventType = "Call notice" | "Downgrade" | "Barrier proximity" | "Default";
+
+/** An event on one specific holding. It alerts every client who holds that instrument (update 2, 4.2). */
+export interface PositionEvent {
   id: string;
-  name: string;
-  assetClass: string;
-  tags: Tag[];
-  riskLevel: 1 | 2 | 3 | 4 | 5;
-  oneLiner: string;
+  batch: ScanBatch;
+  eventType: PositionEventType;
+  /** Matches holdings[].instrument exactly. */
+  instrument: string;
+  headline: string;
+  description: string;
+  publishedAt: string;
+  /**
+   * Optional theme-like content, so talking points can be drafted for a client whose only
+   * link to today's news is this event. The tag moves give the estimated effect on the holding.
+   */
+  narrative?: Pick<
+    Theme,
+    "title" | "shortTitle" | "whatHappened" | "whyItMatters" | "affectedTags" | "clientSummary" | "clientTalkingPoint" | "clientNextStep" | "clientNextStepDiscretionary"
+  >;
 }
 
 export interface HouseViewEntry {
@@ -155,15 +168,6 @@ export interface ScoreFactors {
   score: number;
 }
 
-export type NextStepAction = "Talking points" | "Portfolio review";
-
-export interface NextStep {
-  action: NextStepAction;
-  reason: string;
-  rule: 1 | 2 | 3 | 4 | 5;
-  flag?: "Barrier risk";
-}
-
 export type Priority = "High" | "Medium" | "Low";
 
 export type ThemeStatus = "unchanged" | "updated" | "new";
@@ -174,77 +178,88 @@ export interface ActiveTheme extends Theme {
   newsIds: string[];
   status: ThemeStatus;
   updateNote?: string;
+  /** Set when this "theme" is the narrative of a position event rather than a market theme. */
+  positionEventId?: string;
 }
 
 export interface ThemeAssessment {
   theme: ActiveTheme;
   exposure: ThemeExposure;
   factors: ScoreFactors;
-  nextStep: NextStep;
+  /** Set when the client holds a structured note this theme moves towards its barrier. */
+  flag?: "Barrier risk";
 }
 
 /** How a client row differs from the 9 AM brief after an ad hoc scan. */
-export interface ClientChange {
-  isNew: boolean;
-  /** Positive = moved up the list. */
-  rankDelta: number;
-  impactChanged: boolean;
-}
-
 export interface RankedClient {
   client: Client;
   rank: number;
   priority: Priority;
   primary: ThemeAssessment;
   others: ThemeAssessment[];
-  change: ClientChange | null;
 }
 
-export interface ProspectTheme {
-  theme: ActiveTheme;
-  products: Product[];
-  featured: boolean;
-}
-
-export interface ScanRecord {
-  completedAt: string;
-  deliveredAt: string;
-  itemsRead: number;
-  sourceCount: number;
-  relevantCount: number;
-  themeCount: number;
-  affectedClientCount: number;
-  adHoc: {
-    at: string;
-    newItems: number;
-    newRelevant: number;
-    newThemes: number;
-    updatedThemes: number;
-    themeCount: number;
-    affectedClientCount: number;
-  } | null;
-}
-
-export interface ScanArgs {
+/** What the system knows about one RM's book at a moment in the day: the items received so far, matched to holdings. */
+export interface BookState {
   date: string;
   rmId: string;
-  upTo: ScanBatch;
-}
-
-export interface ScanResult extends ScanArgs {
-  record: ScanRecord;
+  /** "HH:MM" SGT, inclusive: every item published at or before this time has been received. */
+  at: string;
   news: NewsItem[];
+  /** Market themes formed from the news received so far. */
   themes: ActiveTheme[];
+  /** Position events received so far. */
+  positionEvents: PositionEvent[];
+  /** Clients with exposure to a market theme or a position event, ordered by priority score. */
   clients: RankedClient[];
   clientCount: number;
-  prospectThemes: ProspectTheme[];
+}
+
+/** One theme as it appears in the MarketPulse Daily Brief: tailored to the RM's book with counts only. */
+export interface BriefTheme {
+  theme: ActiveTheme;
+  /** Clients of this RM holding anything the theme moves. */
+  clientsExposed: number;
+  /** Readable names of the asset types those clients hold, e.g. "long-duration USD bonds or REITs". */
+  assetTypes: string;
+}
+
+/** Output of the daily brief job: everything the 9 AM email says. */
+export interface DailyBrief {
+  date: string;
+  rmId: string;
+  generatedAt: string;
+  deliveredAt: string;
+  /** Ordered by relevance to the RM's book. */
+  themes: BriefTheme[];
+  events: { event: PositionEvent; holders: number }[];
+  houseView: { assetClass: string; stance: string }[];
+  /** Clients with some exposure today. A count, never names. */
+  clientsExposed: number;
+}
+
+/** A news item or a position event, as the alert monitor receives it. */
+export interface MonitorItem {
+  id: string;
+  kind: "news" | "event";
+  headline: string;
+  publishedAt: string;
+  batch: ScanBatch;
+}
+
+export interface MonitorEvaluation {
+  itemId: string;
+  headline: string;
+  evaluatedAt: string;
+  /** Set when this item (alone or with items arriving at the same moment) caused a Client Alert. */
+  alertId?: string;
 }
 
 // ---------- Documents ----------
 
-/** Shared by all three documents: Client or prospect · Theme · Why now · Data as of. */
+/** Shared header of the talking points: Client · Theme · Why now · Data as of · Prepared for. */
 export interface DocHeader {
-  subjectKind: "Client" | "Prospect";
+  subjectKind: "Client";
   subject: string;
   themeTitle: string;
   themeType: ThemeType;
@@ -263,14 +278,6 @@ export interface DocHoldingLine {
   pctOfAum: number;
   estMovePct: number;
   estImpactUsd: number;
-}
-
-export interface DocProductLine {
-  productId: string;
-  name: string;
-  assetClass: string;
-  riskLevel: number;
-  oneLiner: string;
 }
 
 /** The only part of the talking points that chat can change. */
@@ -299,54 +306,6 @@ export interface TalkingPointsDoc {
   wording: TalkingPointsWording;
 }
 
-export interface PortfolioReviewHandoff {
-  handoffId: string;
-  kind: "portfolio-review";
-  createdAt: string;
-  header: DocHeader;
-  rm: { id: string; name: string };
-  client: {
-    id: string;
-    name: string;
-    mandate: Mandate;
-    riskProfile: RiskProfile;
-    banks: string[];
-    aumUsd: number;
-    lastContactDate: string;
-    notes?: string;
-  };
-  theme: { id: string; title: string; type: ThemeType; whatHappened: string; whyItMatters: string; stressTest?: string };
-  exposure: { exposureUsd: number; exposurePct: number; estImpactUsd: number; estImpactPct: number };
-  recommendation: { action: NextStepAction; reason: string };
-  affectedHoldings: DocHoldingLine[];
-  otherThemes: { id: string; title: string; exposurePct: number; estImpactUsd: number }[];
-  pointsToCover: string[];
-  likelyClientQuestions: string[];
-  optionsToDiscuss: DocProductLine[];
-  /** Free text from the RM for the Portfolio Review agent. */
-  rmContext: string;
-  /** Gaps the completeness check still found when the RM sent the hand-off. */
-  openGaps: string[];
-}
-
-export interface ProposalHandoff {
-  handoffId: string;
-  kind: "proposal";
-  createdAt: string;
-  header: DocHeader;
-  rm: { id: string; name: string };
-  theme: { id: string; title: string; type: ThemeType; whatHappened: string; whyItMatters: string; stressTest?: string };
-  prospectFit: { profile: string; suits: string; angle: string };
-  products: DocProductLine[];
-  keyRisks: string[];
-  /** Free text from the RM for the Proposal agent. */
-  rmContext: string;
-  /** Gaps the completeness check still found when the RM sent the hand-off. */
-  openGaps: string[];
-}
-
-export type Handoff = PortfolioReviewHandoff | ProposalHandoff;
-
 /** Neutral layout model. The on-screen view, the .docx and the plain text all render from it. */
 export type DocBlock =
   | { kind: "paragraph"; text: string }
@@ -361,30 +320,21 @@ export interface DocSection {
 
 export interface DocModel {
   title: string;
-  audience: "Client-shareable" | "Internal";
+  audience: string;
   header: { label: string; value: string }[];
   sections: DocSection[];
   fileName: string;
 }
 
-// ---------- Checkpoint and activity log ----------
-
-export type ClientAction = "Talking points" | "Portfolio review" | "Skip";
-
-export type ActItem =
-  | { kind: "talking-points"; clientId: string }
-  | { kind: "portfolio-review"; clientId: string }
-  | { kind: "proposal"; themeId: string; profile: string };
+// ---------- Activity log ----------
 
 export type LogType =
-  | "Approved"
-  | "Contacted"
-  | "Portfolio review"
-  | "Prospect"
-  | "No action"
-  | "Downloaded"
+  | "Brief delivered"
+  | "Alert sent"
+  | "Talking points approved"
   | "Shared"
-  | "Scan";
+  | "No contact needed"
+  | "Logged to Portfolio Review";
 
 export interface LogEntry {
   id: string;
@@ -395,6 +345,8 @@ export interface LogEntry {
   subject: string;
   theme: string;
   detail: string;
+  /** System events (brief delivered, alert sent) are recorded once per key. */
+  key?: string;
 }
 
 // ---------- Talking points chat (update 1) ----------
@@ -452,7 +404,6 @@ export interface LockedFacts {
   versusPurchaseCost: string;
   barrierDistance?: string;
   lastContact: { iso: string; spoken: string };
-  options: { name: string; riskLevel: string }[];
   otherThemes: string[];
   disclaimer: string;
 }
@@ -473,4 +424,65 @@ export interface RefineResponse {
   reply: string;
   /** Wording fields where the model's text was discarded because it contained a figure that is not in the source data. */
   rejectedFields: (keyof TalkingPointsWording)[];
+}
+
+// ---------- Alerts and Portfolio Review log (update 2) ----------
+
+export type TriggerKind = "position-event" | "material-impact" | "concentrated-exposure";
+
+export interface AlertTrigger {
+  clientId: string;
+  kind: TriggerKind;
+  themeId?: string;
+  positionEventId?: string;
+  /** Plain-language reason for the portal, e.g. "Call notice on Partner Bank A 5.875% USD Perpetual". */
+  reason: string;
+  /** "Why this client" for the Client Alert email: asset type and trigger in words, no amounts. */
+  whyClient: string;
+  /** Plain-language headline for the review timeline, e.g. "US rate move hit long-duration USD bonds and REITs". */
+  summary: string;
+  /** Theme or event the trigger is about. A client is alerted once per key per day. */
+  key: string;
+  /** Every theme or event that met the rule for this client when the alert went out, shown or not. */
+  covers: string[];
+}
+
+export interface Alert {
+  id: string;
+  rmId: string;
+  date: string;
+  /** When the monitor sent it: a minute after the item that caused it arrived. ISO, SGT. */
+  detectedAt: string;
+  /** "HH:MM" of detectedAt. Alerts have no fixed schedule. */
+  time: string;
+  /** The news items or position events behind this alert (several only when they arrived together). */
+  itemIds: string[];
+  triggers: AlertTrigger[];
+}
+
+export type ReviewOutcome = "Contacted: no concerns" | "Contacted: concerns raised" | "Could not reach" | "No contact needed";
+
+export interface ReviewLogEntry {
+  id: string;
+  clientId: string;
+  rmId: string;
+  alertId: string;
+  createdAt: string;
+  updatedAt: string;
+  trigger: {
+    kind: TriggerKind;
+    themeId?: string;
+    positionEventId?: string;
+    reason: string;
+    /** Plain-language headline for the review timeline. */
+    summary: string;
+  };
+  holdingsSnapshot: { instrument: string; bank: string; marketValueUsd: number; estImpactUsd: number }[];
+  talkingPoints: { status: "drafted" | "approved" | "shared"; approvedVersion?: number; sharedVia?: string[]; sharedAt?: string };
+  outcome?: ReviewOutcome;
+  rmNote?: string;
+  discussAtNextReview: boolean;
+  nextReviewDate: string;
+  /** Set when the RM clicks "Log for next portfolio review". Only logged entries reach the review. */
+  loggedAt?: string;
 }

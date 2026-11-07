@@ -11,7 +11,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-07-02",
-    "aumUsd": 12400000
+    "aumUsd": 12400000,
+    "nextReviewDate": "2027-01-15"
   },
   {
     "id": "c-k2",
@@ -25,7 +26,8 @@
     "prefersFrequentUpdates": true,
     "lastContactDate": "2026-10-02",
     "notes": "Asked to be told promptly about anything affecting his structured note.",
-    "aumUsd": 8000000
+    "aumUsd": 8000000,
+    "nextReviewDate": "2026-11-19"
   },
   {
     "id": "c-k3",
@@ -40,7 +42,8 @@
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-29",
     "notes": "Family account: separate beneficial owners. Confirm which family member to contact for each position.",
-    "aumUsd": 21000000
+    "aumUsd": 21000000,
+    "nextReviewDate": "2027-02-11"
   },
   {
     "id": "c-k4",
@@ -54,7 +57,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-21",
-    "aumUsd": 15000000
+    "aumUsd": 15000000,
+    "nextReviewDate": "2026-12-03"
   },
   {
     "id": "c-k5",
@@ -67,7 +71,8 @@
     ],
     "prefersFrequentUpdates": true,
     "lastContactDate": "2026-10-06",
-    "aumUsd": 6500000
+    "aumUsd": 6500000,
+    "nextReviewDate": "2027-03-18"
   },
   {
     "id": "c-k6",
@@ -81,7 +86,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-24",
-    "aumUsd": 9500000
+    "aumUsd": 9500000,
+    "nextReviewDate": "2027-04-08"
   },
   {
     "id": "c-k7",
@@ -95,7 +101,8 @@
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-08-14",
     "notes": "Relies on bond coupons for regular income.",
-    "aumUsd": 5000000
+    "aumUsd": 5000000,
+    "nextReviewDate": "2026-11-26"
   },
   {
     "id": "c-k8",
@@ -108,7 +115,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-30",
-    "aumUsd": 3200000
+    "aumUsd": 3200000,
+    "nextReviewDate": "2027-02-25"
   },
   {
     "id": "c-s1",
@@ -122,7 +130,8 @@
     ],
     "prefersFrequentUpdates": true,
     "lastContactDate": "2026-10-05",
-    "aumUsd": 28000000
+    "aumUsd": 28000000,
+    "nextReviewDate": "2026-12-17"
   },
   {
     "id": "c-s2",
@@ -135,7 +144,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-25",
-    "aumUsd": 7200000
+    "aumUsd": 7200000,
+    "nextReviewDate": "2027-01-28"
   },
   {
     "id": "c-s3",
@@ -149,7 +159,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-01",
-    "aumUsd": 11000000
+    "aumUsd": 11000000,
+    "nextReviewDate": "2026-11-12"
   },
   {
     "id": "c-s4",
@@ -162,7 +173,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-28",
-    "aumUsd": 4800000
+    "aumUsd": 4800000,
+    "nextReviewDate": "2027-03-04"
   },
   {
     "id": "c-s5",
@@ -177,7 +189,8 @@
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-22",
     "notes": "Joint account with spouse. Both sign off on strategy changes.",
-    "aumUsd": 16500000
+    "aumUsd": 16500000,
+    "nextReviewDate": "2027-04-22"
   },
   {
     "id": "c-s6",
@@ -190,7 +203,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-09-18",
-    "aumUsd": 2600000
+    "aumUsd": 2600000,
+    "nextReviewDate": "2026-12-10"
   },
   {
     "id": "c-s7",
@@ -203,7 +217,8 @@
     ],
     "prefersFrequentUpdates": false,
     "lastContactDate": "2026-10-01",
-    "aumUsd": 5400000
+    "aumUsd": 5400000,
+    "nextReviewDate": "2027-01-21"
   },
   {
     "id": "c-s8",
@@ -216,112 +231,7 @@
     ],
     "prefersFrequentUpdates": true,
     "lastContactDate": "2026-10-07",
-    "aumUsd": 9000000
-  },
-  {
-    "id": "c-d1",
-    "rmId": "rm-daniel",
-    "name": "Nguyen Thanh Hai",
-    "mandate": "Advisory",
-    "riskProfile": "Aggressive",
-    "banks": [
-      "UBS",
-      "Standard Chartered"
-    ],
-    "prefersFrequentUpdates": false,
-    "lastContactDate": "2026-09-23",
-    "aumUsd": 42000000
-  },
-  {
-    "id": "c-d2",
-    "rmId": "rm-daniel",
-    "name": "Grace Halim",
-    "mandate": "Discretionary",
-    "riskProfile": "Conservative",
-    "banks": [
-      "Standard Chartered"
-    ],
-    "prefersFrequentUpdates": true,
-    "lastContactDate": "2026-10-01",
-    "aumUsd": 6000000
-  },
-  {
-    "id": "c-d3",
-    "rmId": "rm-daniel",
-    "name": "Benjamin Teo",
-    "mandate": "Advisory",
-    "riskProfile": "Growth",
-    "banks": [
-      "DBS",
-      "UBS"
-    ],
-    "prefersFrequentUpdates": false,
-    "lastContactDate": "2026-09-26",
-    "aumUsd": 13500000
-  },
-  {
-    "id": "c-d4",
-    "rmId": "rm-daniel",
-    "name": "Chong Mei Ling",
-    "mandate": "Advisory",
-    "riskProfile": "Balanced",
-    "banks": [
-      "DBS"
-    ],
-    "prefersFrequentUpdates": false,
-    "lastContactDate": "2026-08-30",
-    "aumUsd": 3900000
-  },
-  {
-    "id": "c-d5",
-    "rmId": "rm-daniel",
-    "name": "Arjun Kapoor",
-    "mandate": "Advisory",
-    "riskProfile": "Growth",
-    "banks": [
-      "Standard Chartered"
-    ],
-    "prefersFrequentUpdates": false,
-    "lastContactDate": "2026-09-27",
-    "aumUsd": 7800000
-  },
-  {
-    "id": "c-d6",
-    "rmId": "rm-daniel",
-    "name": "Helen Sim",
-    "mandate": "Discretionary",
-    "riskProfile": "Conservative",
-    "banks": [
-      "DBS"
-    ],
-    "prefersFrequentUpdates": false,
-    "lastContactDate": "2026-09-19",
-    "aumUsd": 4400000
-  },
-  {
-    "id": "c-d7",
-    "rmId": "rm-daniel",
-    "name": "Kenji Watanabe",
-    "mandate": "Advisory",
-    "riskProfile": "Balanced",
-    "banks": [
-      "UBS"
-    ],
-    "prefersFrequentUpdates": false,
-    "lastContactDate": "2026-10-03",
-    "aumUsd": 10200000
-  },
-  {
-    "id": "c-d8",
-    "rmId": "rm-daniel",
-    "name": "Stephanie Ng",
-    "mandate": "Discretionary",
-    "riskProfile": "Growth",
-    "banks": [
-      "Bank of Singapore"
-    ],
-    "prefersFrequentUpdates": false,
-    "lastContactDate": "2026-09-16",
-    "aumUsd": 5600000
+    "aumUsd": 9000000,
+    "nextReviewDate": "2027-03-25"
   }
 ]

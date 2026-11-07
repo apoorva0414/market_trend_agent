@@ -117,11 +117,11 @@ export function buildDocx(model: DocModel): Document {
     for (const block of section.blocks) children.push(...blockToDocx(block));
   }
   children.push(
-    new Paragraph({ spacing: { before: 360 }, children: [run(`Drafted by the Daily Market Brief agent. ${SAMPLE_BANNER}`, { italics: true, size: 16, color: MUTED })] }),
+    new Paragraph({ spacing: { before: 360 }, children: [run(`Drafted by the MarketPulse agent. ${SAMPLE_BANNER}`, { italics: true, size: 16, color: MUTED })] }),
   );
 
   return new Document({
-    creator: "Daily Market Brief (prototype)",
+    creator: "MarketPulse (prototype)",
     title: model.title,
     description: SAMPLE_BANNER,
     sections: [

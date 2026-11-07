@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { buttonSecondary } from "../components/ui";
 import { fmtTimestampSgt } from "../logic/format";
@@ -5,18 +6,17 @@ import { useApp } from "../state/AppContext";
 import type { LogType } from "../types";
 
 const TYPE_STYLE: Record<LogType, string> = {
-  Approved: "border-gain/50 bg-gain/12 text-gain",
-  Contacted: "border-brand/60 bg-brand/25 text-brand-tint",
-  "Portfolio review": "border-brand bg-brand text-white",
-  Prospect: "border-brand-tint/70 bg-transparent text-brand-tint",
-  "No action": "border-line bg-raised text-muted",
-  Downloaded: "border-line bg-raised text-soft",
+  "Brief delivered": "border-line bg-transparent text-muted",
+  "Alert sent": "border-checkpoint bg-checkpoint/10 text-checkpoint",
+  "Talking points approved": "border-gain/50 bg-gain/12 text-gain",
   Shared: "border-gain/50 bg-transparent text-gain",
-  Scan: "border-line bg-transparent text-muted",
+  "No contact needed": "border-line bg-raised text-soft",
+  "Logged to Portfolio Review": "border-brand/60 bg-brand/25 text-brand-tint",
 };
 
 export function ActivityLog() {
-  const { log, clearLog } = useApp();
+  const { log, clearLog, resetDemo } = useApp();
+  const [confirming, setConfirming] = useState<"clear" | "reset" | null>(null);
   return (
     <div className="mx-auto max-w-[1400px] px-6 py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -26,17 +26,38 @@ export function ActivityLog() {
             This log can also serve as evidence that discretionary clients were kept informed (to confirm with Compliance).
           </p>
         </div>
-        {log.length > 0 && (
-          <button
-            type="button"
-            className={buttonSecondary}
-            onClick={() => {
-              if (window.confirm("Clear the activity log? This is meant for resetting the demo.")) clearLog();
-            }}
-          >
-            Clear log
-          </button>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          {confirming ? (
+            <>
+              <span className="text-sm text-soft">{confirming === "reset" ? "Reset the demo? This clears the log, today's review entries and drafts." : "Clear the activity log?"}</span>
+              <button
+                type="button"
+                className={buttonSecondary}
+                onClick={() => {
+                  if (confirming === "reset") resetDemo();
+                  else clearLog();
+                  setConfirming(null);
+                }}
+              >
+                Yes, {confirming === "reset" ? "reset" : "clear"}
+              </button>
+              <button type="button" className={buttonSecondary} onClick={() => setConfirming(null)}>
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              {log.length > 0 && (
+                <button type="button" className={buttonSecondary} onClick={() => setConfirming("clear")}>
+                  Clear log
+                </button>
+              )}
+              <button type="button" className={buttonSecondary} onClick={() => setConfirming("reset")}>
+                Reset demo
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="mt-6 overflow-x-auto rounded-lg border border-line bg-surface">
@@ -47,7 +68,7 @@ export function ActivityLog() {
               <th className="px-4 py-2.5 font-semibold">Timestamp (SGT)</th>
               <th className="px-4 py-2.5 font-semibold">RM</th>
               <th className="px-4 py-2.5 font-semibold">Decision type</th>
-              <th className="px-4 py-2.5 font-semibold">Client or prospect</th>
+              <th className="px-4 py-2.5 font-semibold">Client</th>
               <th className="px-4 py-2.5 font-semibold">Theme</th>
               <th className="px-4 py-2.5 font-semibold">Detail</th>
             </tr>
@@ -68,9 +89,9 @@ export function ActivityLog() {
             {log.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-4 py-12 text-center text-muted">
-                  Nothing logged yet. Decisions, downloads, shares and ad hoc scans appear here.{" "}
-                  <Link to="/brief" className="font-medium text-brand-tint underline underline-offset-2">
-                    Open the brief
+                  Nothing logged yet. Briefs, alerts, approvals, shares and review log entries appear here.{" "}
+                  <Link to="/" className="font-medium text-brand-tint underline underline-offset-2">
+                    Open the inbox
                   </Link>
                 </td>
               </tr>

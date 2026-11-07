@@ -52,7 +52,7 @@ export function BrandMark() {
       ) : (
         <span className="text-lg font-semibold tracking-[0.28em] text-white">AZIMUT</span>
       )}
-      <span className="border-l border-line pl-3 text-sm text-muted">Daily Market Brief</span>
+      <span className="border-l border-line pl-3 text-sm text-muted">MarketPulse</span>
     </span>
   );
 }

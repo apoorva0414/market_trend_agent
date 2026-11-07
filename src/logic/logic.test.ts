@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Client, Holding, TagMove } from "../types";
 import { computeExposure, isAffected } from "./exposure";
-import { recommendNextStep } from "./nextStep";
+import { barrierFlag } from "./flags";
 import { priorityForRank, scoreExposure } from "./scoring";
 
 const client: Client = {
@@ -14,6 +14,7 @@ const client: Client = {
   aumUsd: 10_000_000,
   prefersFrequentUpdates: false,
   lastContactDate: "2026-10-01",
+  nextReviewDate: "2027-01-15",
 };
 
 function holding(tags: Holding["tags"], marketValueUsd: number, clientId = "c1"): Holding {
@@ -83,45 +84,22 @@ describe("priority score (6.3)", () => {
   });
 });
 
-describe("recommended next step (6.4), first match wins", () => {
+describe("barrier risk flag", () => {
   const tech = {
-    id: "t2",
-    type: "View" as const,
     affectedTags: [
       { tag: "us-tech", estMovePct: -1.5 },
       { tag: "structured-notes-tech-underlying", estMovePct: -6 },
     ] satisfies TagMove[],
   };
 
-  it("rule 1: concentrated exposure to a falling theme goes to portfolio review", () => {
-    const exposure = computeExposure(client, [holding(["reits"], 2_500_000)], yields);
-    expect(recommendNextStep(yields, exposure)).toMatchObject({ action: "Portfolio review", rule: 1 });
+  it("is set when the theme moves tech structured notes and the client holds one", () => {
+    const exposure = computeExposure(client, [holding(["structured-notes-tech-underlying"], 900_000)], { id: "t2", ...tech });
+    expect(barrierFlag(tech, exposure)).toBe("Barrier risk");
   });
 
-  it("rule 1 beats rule 2 when a note holder is also concentrated", () => {
-    const exposure = computeExposure(client, [holding(["structured-notes-tech-underlying"], 3_000_000)], tech);
-    expect(recommendNextStep(tech, exposure).rule).toBe(1);
-  });
-
-  it("rule 2: a structured note on tech underlyings is flagged as barrier risk", () => {
-    const exposure = computeExposure(client, [holding(["structured-notes-tech-underlying"], 900_000), holding(["us-tech"], 700_000)], tech);
-    expect(recommendNextStep(tech, exposure)).toMatchObject({ action: "Talking points", rule: 2, flag: "Barrier risk" });
-  });
-
-  it("rule 3: Pulse themes are factual updates", () => {
-    const oil = { id: "t3", type: "Pulse" as const, affectedTags: [{ tag: "airlines", estMovePct: -4 }] satisfies TagMove[] };
-    const exposure = computeExposure(client, [holding(["airlines"], 800_000)], oil);
-    expect(recommendNextStep(oil, exposure)).toMatchObject({ action: "Talking points", rule: 3 });
-  });
-
-  it("rule 4: a positive move on a View theme opens a rebalancing conversation", () => {
-    const china = { id: "t4", type: "View" as const, affectedTags: [{ tag: "china-equity", estMovePct: 6 }] satisfies TagMove[] };
-    const exposure = computeExposure(client, [holding(["china-equity"], 4_000_000)], china);
-    expect(recommendNextStep(china, exposure)).toMatchObject({ action: "Talking points", rule: 4 });
-  });
-
-  it("rule 5: everything else gets talking points", () => {
-    const exposure = computeExposure(client, [holding(["reits"], 1_000_000)], yields);
-    expect(recommendNextStep(yields, exposure)).toMatchObject({ action: "Talking points", rule: 5 });
+  it("is not set otherwise", () => {
+    const exposure = computeExposure(client, [holding(["us-tech"], 900_000)], { id: "t2", ...tech });
+    expect(barrierFlag(tech, exposure)).toBeUndefined();
+    expect(barrierFlag(yields, computeExposure(client, [holding(["reits"], 900_000)], yields))).toBeUndefined();
   });
 });

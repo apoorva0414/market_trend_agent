@@ -10,7 +10,6 @@ import {
   header,
   holdingLines,
   houseViewsFor,
-  productLines,
   roundedPct,
   versusCost,
 } from "./builders";
@@ -46,7 +45,7 @@ export interface BilingualDraft {
 export function draftTalkingPoints(row: RankedClient, ctx: BuildContext): BilingualDraft {
   const dataSet = ctx.dataSet ?? defaultData;
   const { client, primary, others } = row;
-  const { theme, exposure, nextStep } = primary;
+  const { theme, exposure, flag } = primary;
   const negative = exposure.estImpactUsd < 0;
   const discretionary = client.mandate === "Discretionary";
 
@@ -83,7 +82,7 @@ export function draftTalkingPoints(row: RankedClient, ctx: BuildContext): Biling
   const views = houseViewsFor(exposure, dataSet.houseView);
   const noteHolding = exposure.holdings.find((h) => h.holding.barrierDistancePct !== undefined);
   const barrier: Line | null =
-    nextStep.flag === "Barrier risk" && noteHolding
+    flag === "Barrier risk" && noteHolding
       ? {
           en: `Your structured note is linked to large US technology shares. The weakest of them is now about ${noteHolding.holding.barrierDistancePct}% above the barrier, so we would like to walk you through what happens at maturity if it stays above, touches or closes below that level.`,
           zh: `您的结构性票据挂钩美国大型科技股。其中表现最弱的一只目前高于障碍价约${noteHolding.holding.barrierDistancePct}%，因此我们希望向您说明：到期时股价维持在障碍价之上、触及障碍价或收于其下，分别会出现什么情况。`,
@@ -136,7 +135,6 @@ export function draftTalkingPoints(row: RankedClient, ctx: BuildContext): Biling
   }
 
   // ---- Next steps: who decides, what to look at, and a call.
-  const options = productLines(theme, dataSet, client);
   const nextSteps: Line[] = [];
   if (discretionary) {
     nextSteps.push(
@@ -178,13 +176,6 @@ export function draftTalkingPoints(row: RankedClient, ctx: BuildContext): Biling
           en: "There is no urgency. We could consider gradually rebalancing part of the gain back towards your target allocation.",
           zh: "此事并不紧急。我们可以考虑逐步把部分收益再平衡，回到您的目标配置。",
         },
-      });
-    }
-    if (options.length > 0) {
-      const names = options.slice(0, 2).map((o) => o.name);
-      nextSteps.push({
-        en: `Options we could discuss, without obligation: ${joinList(names)}.`,
-        zh: `可供讨论的选项（不构成任何义务）：${joinListZh(names)}。`,
       });
     }
   }
@@ -236,7 +227,7 @@ export function wordingOf(draft: BilingualDraft, lang: Lang): TalkingPointsWordi
 
 export function buildTalkingPoints(row: RankedClient, ctx: BuildContext): TalkingPointsDoc {
   const { client, primary } = row;
-  const { theme, exposure, nextStep } = primary;
+  const { theme, exposure, flag } = primary;
   const negative = exposure.estImpactUsd < 0;
   const labels = joinList(exposedTags(exposure).map((tag) => TAG_LABEL[tag]));
 
@@ -247,21 +238,21 @@ export function buildTalkingPoints(row: RankedClient, ctx: BuildContext): Talkin
   return {
     id: `tp-${compactDate(ctx.date)}-${client.id}-${theme.id}`,
     kind: "talking-points",
-    header: header("Client", client.name, theme, whyNow, ctx),
+    header: header(client.name, theme, whyNow, ctx),
     clientId: client.id,
     themeId: theme.id,
     holdings: holdingLines(exposure),
     totalExposureUsd: exposure.exposureUsd,
     totalImpactUsd: exposure.estImpactUsd,
     disclaimer: DISCLAIMER,
-    ...(nextStep.flag ? { flag: nextStep.flag } : {}),
+    ...(flag ? { flag } : {}),
     wording: wordingOf(draftTalkingPoints(row, ctx), "en"),
   };
 }
 
 /** The fact fields, formatted exactly as the RM sees them. The model may quote these but never change them. */
 export function buildLockedFacts(row: RankedClient, doc: TalkingPointsDoc, ctx: BuildContext): LockedFacts {
-  const dataSet = ctx.dataSet ?? defaultData;
+  void ctx;
   const { client, primary, others } = row;
   const { theme, exposure } = primary;
   const vsCost = versusCost(exposure);
@@ -288,7 +279,6 @@ export function buildLockedFacts(row: RankedClient, doc: TalkingPointsDoc, ctx: 
     versusPurchaseCost: `about ${Math.abs(Math.round(vsCost * 100))}% ${vsCost >= 0 ? "above" : "below"} purchase cost after this move`,
     ...(noteHolding ? { barrierDistance: `${noteHolding.holding.barrierDistancePct}% above the barrier` } : {}),
     lastContact: { iso: client.lastContactDate, spoken: fmtDayMonth(client.lastContactDate) },
-    options: productLines(theme, dataSet, client).map((o) => ({ name: o.name, riskLevel: `${o.riskLevel} of 5` })),
     otherThemes: others.map((o) => o.theme.title),
     disclaimer: doc.disclaimer,
   };

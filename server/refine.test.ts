@@ -3,7 +3,7 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { describe, expect, it, vi } from "vitest";
 import { data, DEMO_DATE } from "../src/data";
 import { buildRefineContext, buildTalkingPoints } from "../src/documents/talkingPoints";
-import { runScan } from "../src/logic/scan";
+import { bookStateAt } from "../src/logic/book";
 import { REFUSAL_REPLY } from "../src/talkingPoints/lockedFacts";
 import type { RefineRequest } from "../src/types";
 import { createApp } from "./app";
@@ -12,7 +12,7 @@ import { DEFAULT_MODEL, refineTalkingPoints } from "./refine";
 
 const rm = data.rms[0];
 const ctx = { rm, date: DEMO_DATE };
-const row = runScan({ date: DEMO_DATE, rmId: rm.id, upTo: "morning" }).clients.find((r) => r.primary.nextStep.flag === "Barrier risk")!;
+const row = bookStateAt({ date: DEMO_DATE, rmId: rm.id, at: "08:30" }).clients.find((r) => r.primary.flag === "Barrier risk")!;
 const doc = buildTalkingPoints(row, ctx);
 const request: RefineRequest = {
   ...buildRefineContext(row, doc, ctx),
@@ -42,7 +42,7 @@ describe("refineTalkingPoints", () => {
     expect(params.system).toBe(SYSTEM_PROMPT);
     expect(params.output_config.effort).toBe("low");
     expect(params.messages[0].content).toContain("<instruction>\nMake it shorter\n</instruction>");
-    expect(params.messages[0].content).toContain("USD 900k"); // locked facts are given to the model as formatted text
+    expect(params.messages[0].content).toContain("USD 750k"); // locked facts are given to the model as formatted text
     expect(result).toEqual({ updatedDoc, reply: "Shortened to 3 talking points.", rejectedFields: [] });
   });
 

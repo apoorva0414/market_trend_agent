@@ -1,0 +1,36 @@
+[
+  {
+    "id": "pe-barrier-tech-note",
+    "batch": "morning",
+    "eventType": "Barrier proximity",
+    "instrument": "Worst-of Autocallable Note on NVDA / MSFT / AVGO (60% barrier)",
+    "headline": "Tech worst-of note now trades within 10% of its 60% barrier",
+    "description": "After the overnight fall in technology shares, the weakest underlying of this note is about 8% above its knock-in barrier. If it closes below the barrier, capital protection at maturity is lost.",
+    "publishedAt": "2026-10-12T06:40:00+08:00"
+  },
+  {
+    "id": "pe-perp-call",
+    "batch": "intraday",
+    "eventType": "Call notice",
+    "instrument": "Partner Bank A 5.875% USD Perpetual",
+    "headline": "Partner Bank A calls its 5.875% USD perpetual at par on 12 November 2026",
+    "description": "Partner Bank A issued a call notice: holders will be repaid at par on 12 November 2026. The bond had traded around 96 because the market expected the call to be skipped.",
+    "publishedAt": "2026-10-12T13:20:00+08:00",
+    "narrative": {
+      "title": "Partner bank issues call notice on a USD perpetual bond",
+      "shortTitle": "Perpetual call notice",
+      "whatHappened": "Partner Bank A issued a call notice for its 5.875% USD perpetual bond. Holders will be repaid at par on 12 November 2026. The bond had traded around 96, as the market expected the call to be skipped.",
+      "whyItMatters": "Holders gain about 4% as the price moves to par, but the 5.875% coupon stops on the call date. The proceeds need to be reinvested, at a time when the house view prefers the short end.",
+      "affectedTags": [
+        {
+          "tag": "called-usd-perpetual",
+          "estMovePct": 4
+        }
+      ],
+      "clientSummary": "Partner Bank A has announced that it will repay its 5.875% USD perpetual bond in full on 12 November 2026. The bond had been trading below its face value, so its price has risen to reflect repayment at par.",
+      "clientTalkingPoint": "This is a factual corporate action. No instruction is needed from you for the redemption itself, which is processed automatically by the custodian bank.",
+      "clientNextStep": "Decide how to reinvest the redemption proceeds, which are expected on 12 November 2026.",
+      "clientNextStepDiscretionary": "We will reinvest the redemption proceeds, expected on 12 November 2026, in line with your mandate and confirm the change to you."
+    }
+  }
+]

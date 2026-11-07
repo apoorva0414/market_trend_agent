@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { data, DEMO_DATE } from "../data";
 import { buildRefineContext, buildTalkingPoints } from "../documents/talkingPoints";
-import { runScan } from "../logic/scan";
+import { bookStateAt } from "../logic/book";
 import {
   allowedNumbers,
   asksForPromisedReturn,
@@ -12,8 +12,8 @@ import {
 
 const rm = data.rms[0];
 const ctx = { rm, date: DEMO_DATE };
-const scan = runScan({ date: DEMO_DATE, rmId: rm.id, upTo: "morning" });
-const row = scan.clients.find((r) => r.primary.nextStep.flag === "Barrier risk")!; // Rajesh Menon
+const scan = bookStateAt({ date: DEMO_DATE, rmId: rm.id, at: "08:30" });
+const row = scan.clients.find((r) => r.primary.flag === "Barrier risk")!; // Rajesh Menon
 const doc = buildTalkingPoints(row, ctx);
 const context = buildRefineContext(row, doc, ctx);
 const current = doc.wording;
@@ -39,7 +39,7 @@ describe("locked figures (1.3)", () => {
   it("accepts a rewrite that reuses source figures exactly", () => {
     const proposed = {
       ...current,
-      summary: "Technology bonds and shares fell last week. We estimate an effect of about −USD 64.5k (−0.81% of the total) on your holdings.",
+      summary: "Technology bonds and shares fell last week. We estimate an effect of about −USD 55.5k (−0.69% of the total) on your holdings.",
     };
     const result = enforceLockedFigures(current, proposed, allowed);
     expect(result.rejectedFields).toEqual([]);
@@ -49,7 +49,7 @@ describe("locked figures (1.3)", () => {
   it("rejects a field with an invented number and keeps the previous text for that field only", () => {
     const proposed = {
       summary: "Technology shares slipped. We expect the note to gain 37% by year end.",
-      talkingPoints: ["The holdings concerned make up about 20% of your portfolio."],
+      talkingPoints: ["The holdings concerned make up about 18% of your portfolio."],
       nextSteps: ["We suggest a short call within 48 hours."],
     };
     const result = enforceLockedFigures(current, proposed, allowed);
@@ -80,8 +80,7 @@ describe("locked figures (1.3)", () => {
 });
 
 describe("instructions that ask for a promised return", () => {
-  it("catches the demo line even though 20% appears in this client's data", () => {
-    expect(allowed.has("20")).toBe(true);
+  it("catches the demo line by its meaning, not by the number check", () => {
     expect(asksForPromisedReturn("say the note will gain 20%")).toBe(true);
   });
 

@@ -1,13 +1,19 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { data, DEMO_DATE } from "../data";
+import { data, DEMO_DATE, DEMO_NOW } from "../data";
 import { TAGS } from "../types";
-import { runScan } from "./scan";
+import { bookStateAt } from "./book";
+import { runDailyBrief } from "./brief";
+import { simulateMonitor } from "./monitor";
 
-const scan = (rmId: string, upTo: "morning" | "intraday" = "morning") => runScan({ date: DEMO_DATE, rmId, upTo });
+const day = (rmId: string, until = "23:59") => simulateMonitor({ date: DEMO_DATE, rmId, until });
+const clientNamed = (name: string) => data.clients.find((c) => c.name === name)!;
+const resultFor = (rmId: string, itemId: string) => day(rmId).evaluations.find((e) => e.itemId === itemId);
 
-describe("sample data integrity (section 5)", () => {
-  it("has 3 RMs with 8 clients each and 6 to 10 positions per client", () => {
-    expect(data.rms).toHaveLength(3);
+describe("sample data integrity", () => {
+  it("has 2 RMs (one Dedicated ARM, one Central ARM) with 8 clients each and 6 to 10 positions per client", () => {
+    expect(data.rms).toHaveLength(2);
+    expect(data.rms.map((r) => r.arm_model).sort()).toEqual(["Central ARM", "Dedicated ARM"]);
     for (const rm of data.rms) expect(data.clients.filter((c) => c.rmId === rm.id)).toHaveLength(8);
     for (const client of data.clients) {
       const count = data.holdings.filter((h) => h.clientId === client.id).length;
@@ -25,117 +31,95 @@ describe("sample data integrity (section 5)", () => {
     }
   });
 
-  it("uses only the tag vocabulary in holdings, themes, products and the house view", () => {
+  it("uses only the tag vocabulary", () => {
     const used = [
       ...data.holdings.flatMap((h) => h.tags),
       ...data.themes.flatMap((t) => [...t.affectedTags, ...(t.intradayUpdate?.affectedTags ?? [])].map((a) => a.tag)),
-      ...data.products.flatMap((p) => p.tags),
+      ...data.positionEvents.flatMap((e) => e.narrative?.affectedTags.map((a) => a.tag) ?? []),
       ...data.houseView.flatMap((h) => h.tags),
     ];
     for (const tag of used) expect(TAGS).toContain(tag);
   });
 
-  it("points every theme at products that exist on the shelf", () => {
-    const ids = new Set(data.products.map((p) => p.id));
-    for (const theme of data.themes) for (const id of theme.relevantProductIds) expect(ids.has(id), id).toBe(true);
-  });
-});
-
-describe("scheduled 08:30 scan (6.1)", () => {
-  it("reads 12 items from 4 sources, keeps 9 and groups them into 4 themes", () => {
-    const { record, themes } = scan("rm-kevin");
-    expect(record).toMatchObject({ itemsRead: 12, sourceCount: 4, relevantCount: 9, themeCount: 4, adHoc: null });
-    expect(themes.map((t) => t.type)).toEqual(["View", "View", "Pulse", "View"]);
+  it("names position event instruments exactly as in holdings", () => {
+    const instruments = new Set(data.holdings.map((h) => h.instrument));
+    for (const event of data.positionEvents) expect(instruments.has(event.instrument), event.instrument).toBe(true);
   });
 
-  it("shows prospect themes with a positive move, with China stimulus featured first", () => {
-    const { prospectThemes } = scan("rm-kevin");
-    expect(prospectThemes.map((p) => p.theme.id)).toEqual(["theme-china-stimulus", "theme-oil-sanctions"]);
-    expect(prospectThemes[0].featured).toBe(true);
-    expect(prospectThemes[0].products.length).toBeGreaterThan(0);
-  });
-});
-
-describe("demo anchors for Kevin Tan (5.9)", () => {
-  const { clients, clientCount } = scan("rm-kevin");
-
-  it("ranks a Discretionary Conservative bond and REIT heavy client first, for portfolio review", () => {
-    const top = clients[0];
-    expect(top.client).toMatchObject({ mandate: "Discretionary", riskProfile: "Conservative" });
-    expect(top.primary.theme.id).toBe("theme-us-yields");
-    expect(top.primary.exposure.exposurePct).toBeGreaterThan(0.33);
-    expect(top.primary.exposure.exposurePct).toBeLessThan(0.37);
-    expect(new Set(top.primary.exposure.holdings.map((h) => h.tag))).toEqual(new Set(["long-duration-usd-bonds", "reits"]));
-    expect(top.primary.nextStep.action).toBe("Portfolio review");
-    expect(top.priority).toBe("High");
+  it("schedules every client's review between November 2026 and April 2027", () => {
+    for (const client of data.clients) expect(client.nextReviewDate >= "2026-11-01" && client.nextReviewDate <= "2027-04-30", client.name).toBe(true);
   });
 
-  it("recommends talking points with a barrier risk flag for the Advisory Growth note holder", () => {
-    const row = clients.find((r) => r.primary.nextStep.flag === "Barrier risk");
-    expect(row?.client).toMatchObject({ mandate: "Advisory", riskProfile: "Growth" });
-    expect(row?.primary.nextStep.action).toBe("Talking points");
-    expect(row?.primary.exposure.holdings.some((h) => h.holding.barrierDistancePct !== undefined)).toBe(true);
-  });
-
-  it("includes the family account, with its note", () => {
-    const family = clients.find((r) => r.client.notes?.startsWith("Family account"));
-    expect(family).toBeDefined();
-  });
-
-  it("leaves at least one client out of the list as unaffected", () => {
-    expect(clients).toHaveLength(6);
-    expect(clientCount - clients.length).toBeGreaterThanOrEqual(1);
-  });
-});
-
-describe("other RMs (5.9)", () => {
-  it("gives Sarah Lim and Daniel Wong 3 to 6 affected clients each, with different lists", () => {
-    const sarah = scan("rm-sarah").clients;
-    const daniel = scan("rm-daniel").clients;
-    for (const list of [sarah, daniel]) {
-      expect(list.length).toBeGreaterThanOrEqual(3);
-      expect(list.length).toBeLessThanOrEqual(6);
+  it("spreads morning items over the night and early morning, and keeps intraday items between 13:00 and 14:00", () => {
+    for (const item of [...data.news, ...data.positionEvents]) {
+      const time = item.publishedAt.slice(11, 16);
+      if (item.batch === "morning") expect(time >= "05:50" && time <= "08:15", item.id).toBe(true);
+      else expect(time >= "13:00" && time <= "14:00", item.id).toBe(true);
     }
-    expect(sarah.map((r) => r.client.id)).not.toEqual(daniel.map((r) => r.client.id));
-    expect(sarah.every((r) => r.client.rmId === "rm-sarah")).toBe(true);
+  });
+
+  it("keeps no schedule or interval config for alerts", () => {
+    const config = readFileSync(new URL("../config/alertRules.ts", import.meta.url), "utf8");
+    expect(config).not.toMatch(/schedule|interval|cron|every \d+/i);
   });
 });
 
-describe("ad hoc Scan now (6.1)", () => {
-  const morning = scan("rm-kevin");
-  const intraday = scan("rm-kevin", "intraday");
+describe("daily brief job (update 3, 1.1)", () => {
+  it("reads the morning batch only and orders themes by relevance to the RM's book", () => {
+    const brief = runDailyBrief({ date: DEMO_DATE, rmId: "rm-kevin" });
+    expect(brief).toMatchObject({ generatedAt: "08:30", deliveredAt: "09:00" });
+    expect(brief.themes).toHaveLength(4);
+    expect(brief.themes[0]).toMatchObject({ clientsExposed: 6, assetTypes: "long-duration USD bonds, REITs or short-duration bonds" });
+    expect(brief.themes.find((t) => t.theme.id === "theme-oil-sanctions")?.theme.status).toBe("unchanged"); // the 13:05 widening is not in the brief
+    expect(brief.events.map((e) => [e.event.eventType, e.holders])).toEqual([["Barrier proximity", 1]]);
+  });
+});
 
-  it("picks up the 2 intraday items and adds a fifth Pulse theme", () => {
-    expect(intraday.record.adHoc).toMatchObject({ newItems: 2, newThemes: 1, updatedThemes: 1, themeCount: 5 });
-    const added = intraday.themes.find((t) => t.status === "new");
-    expect(added).toMatchObject({ id: "theme-perp-call", type: "Pulse" });
-    expect(intraday.record.itemsRead).toBe(12); // the scheduled record is unchanged
+describe("demo anchors (update 3, section 5)", () => {
+  it("Kevin Tan: a 06:41 Client Alert with the bond/REIT client (rule A) and the structured-note client (barrier event)", () => {
+    const { alerts } = day("rm-kevin", "09:05");
+    expect(alerts).toHaveLength(1);
+    const [alert] = alerts;
+    expect(alert.time).toBe("06:41");
+    expect(alert.itemIds.sort()).toEqual(["n02", "pe-barrier-tech-note"]);
+    expect(alert.triggers.map((t) => [t.clientId, t.kind])).toEqual([
+      [clientNamed("Eleanor Chua").id, "material-impact"],
+      [clientNamed("Rajesh Menon").id, "position-event"],
+    ]);
   });
 
-  it("raises the energy and airline moves on the oil theme", () => {
-    const move = (s: typeof morning, tag: string) =>
-      s.themes.find((t) => t.id === "theme-oil-sanctions")!.affectedTags.find((a) => a.tag === tag)!.estMovePct;
-    expect(move(intraday, "energy")).toBeGreaterThan(move(morning, "energy"));
-    expect(move(intraday, "airlines")).toBeLessThan(move(morning, "airlines"));
-    expect(intraday.themes.find((t) => t.id === "theme-oil-sanctions")!.status).toBe("updated");
+  it("Kevin Tan: the later rates items and the family account send nothing", () => {
+    expect(resultFor("rm-kevin", "n05")?.alertId).toBeUndefined();
+    expect(resultFor("rm-kevin", "n08")?.alertId).toBeUndefined();
+    const family = data.clients.find((c) => c.notes?.startsWith("Family account"))!;
+    expect(day("rm-kevin").alerts.flatMap((a) => a.triggers.map((t) => t.clientId))).not.toContain(family.id);
   });
 
-  it("brings in one or two of Kevin's clients who hold the called bond", () => {
-    const holders = intraday.clients.filter((r) => [r.primary, ...r.others].some((a) => a.theme.id === "theme-perp-call"));
-    expect(holders.length).toBeGreaterThanOrEqual(1);
-    expect(holders.length).toBeLessThanOrEqual(2);
-    expect(intraday.clients.filter((r) => r.change?.isNew)).toHaveLength(1);
-    expect(intraday.clients.length).toBe(morning.clients.length + 1);
+  it("Kevin Tan, next items: oil at 13:05 sends nothing, the call notice at 13:20 alerts 1 new client", () => {
+    expect(resultFor("rm-kevin", "n13")).toMatchObject({ evaluatedAt: "2026-10-12T13:05:00+08:00" });
+    expect(resultFor("rm-kevin", "n13")?.alertId).toBeUndefined();
+    const update = day("rm-kevin").alerts[1];
+    expect(update).toMatchObject({ time: "13:21" });
+    expect(update.triggers.map((t) => [t.clientId, t.reason])).toEqual([[clientNamed("Victor Ong").id, "Call notice on Partner Bank A 5.875% USD Perpetual"]]);
+    expect(day("rm-kevin").alerts).toHaveLength(2);
   });
 
-  it("re-ranks clients and marks what changed, while #1 stays put", () => {
-    expect(intraday.clients[0].client.id).toBe(morning.clients[0].client.id);
-    expect(intraday.clients[0].change).toBeNull();
-    expect(intraday.clients.some((r) => (r.change?.rankDelta ?? 0) > 0)).toBe(true);
-    expect(intraday.clients.some((r) => (r.change?.rankDelta ?? 0) < 0)).toBe(true);
+  it("Sarah Lim: only the brief; every item, including the intraday ones, needs no alert", () => {
+    const { alerts, evaluations } = day("rm-sarah");
+    expect(alerts).toEqual([]);
+    expect(evaluations.length).toBe(16);
+    expect(evaluations.every((e) => !e.alertId)).toBe(true);
+    expect(runDailyBrief({ date: DEMO_DATE, rmId: "rm-sarah" }).clientsExposed).toBeGreaterThan(0);
   });
 
-  it("is a pure function: the morning result is unchanged by an intraday run", () => {
-    expect(scan("rm-kevin")).toEqual(morning);
+  it("by 14:00 (the demo's current time) both of Kevin's alerts are in, including the 13:21 call notice", () => {
+    expect(day("rm-kevin", DEMO_NOW).alerts.map((a) => a.time)).toEqual(["06:41", "13:21"]);
+    expect(day("rm-kevin", "09:05").evaluations).toHaveLength(13);
+  });
+
+  it("is pure: the book at one time is unchanged by looking at another", () => {
+    const before = bookStateAt({ date: DEMO_DATE, rmId: "rm-kevin", at: "08:30" });
+    bookStateAt({ date: DEMO_DATE, rmId: "rm-kevin", at: "23:59" });
+    expect(bookStateAt({ date: DEMO_DATE, rmId: "rm-kevin", at: "08:30" })).toEqual(before);
   });
 });

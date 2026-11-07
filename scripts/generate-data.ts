@@ -22,6 +22,7 @@ const INSTRUMENTS = {
   orcl55: ["Oracle Corp 5.50% 2055", "Bond", "USD", ["us-tech-credit"], 1.04],
   meta64: ["Meta Platforms 5.75% 2064", "Bond", "USD", ["us-tech-credit"], 1.03],
   note: ["Worst-of Autocallable Note on NVDA / MSFT / AVGO (60% barrier)", "Structured Product", "USD", ["structured-notes-tech-underlying"], 1.11],
+  note2: ["Worst-of Autocallable Note on AAPL / GOOGL / AMZN (65% barrier)", "Structured Product", "USD", ["structured-notes-tech-underlying"], 1.08],
   xom: ["Exxon Mobil Corp", "Equity", "USD", ["energy"], 0.84],
   shel: ["Shell plc ADR", "Equity", "USD", ["energy"], 0.9],
   xle: ["Energy Select Sector SPDR ETF", "Fund", "USD", ["energy"], 0.88],
@@ -88,7 +89,7 @@ const CLIENTS: ClientSpec[] = [
     banks: ["UBS"], prefersFrequentUpdates: true, lastContactDate: "2026-10-02",
     notes: "Asked to be told promptly about anything affecting his structured note.",
     positions: [
-      ["note", 900, 0, 8], ["nvda", 400], ["msft", 300], ["gq", 1700], ["jp", 900],
+      ["note", 750, 0, 8], ["nvda", 400], ["msft", 300], ["gq", 1850], ["jp", 900],
       ["india", 700], ["asiaig", 900], ["sdusd", 900], ["gold", 500], ["usd", 800],
     ],
   },
@@ -114,16 +115,15 @@ const CLIENTS: ClientSpec[] = [
     id: "c-k5", rmId: "rm-kevin", name: "Sophie Laurent", mandate: A, riskProfile: "Balanced",
     banks: ["Julius Baer"], prefersFrequentUpdates: true, lastContactDate: "2026-10-06",
     positions: [
-      ["sia", 500], ["cx", 300], ["tracker", 500], ["ust46", 400], ["gq", 1800],
-      ["eu", 900], ["sdusd", 700], ["gold", 400], ["sgd", 500], ["usd", 500],
+      ["sia", 400], ["cx", 200], ["tracker", 500], ["ust46", 400], ["gq", 1800],
+      ["eu", 1100], ["sdusd", 700], ["gold", 400], ["sgd", 500], ["usd", 500],
     ],
   },
   {
-    // Holds the perpetual that is called intraday (as a secondary theme).
     id: "c-k6", rmId: "rm-kevin", name: "Dr Amanda Yeo", mandate: D, riskProfile: "Balanced",
     banks: ["DBS", "UBS"], prefersFrequentUpdates: false, lastContactDate: "2026-09-24",
     positions: [
-      ["orcl55", 700, 1], ["meta64", 600, 1], ["qqq", 800, 1], ["perp", 800, 1], ["asiaig", 1200, 0],
+      ["orcl55", 700, 1], ["meta64", 600, 1], ["qqq", 800, 1], ["asiaig", 2000, 0],
       ["gq", 2200, 1], ["mlt", 400, 0], ["sgs", 1300, 0], ["gold", 500, 1], ["sgd", 1000, 0],
     ],
   },
@@ -146,7 +146,7 @@ const CLIENTS: ClientSpec[] = [
     id: "c-s1", rmId: "rm-sarah", name: "Chen Wei Ming", mandate: A, riskProfile: "Aggressive",
     banks: ["UBS", "Julius Baer"], prefersFrequentUpdates: true, lastContactDate: "2026-10-05",
     positions: [
-      ["nvda", 3000, 0], ["msft", 2200, 0], ["qqq", 2400, 1], ["note", 1500, 0, 14], ["techig", 1400, 1],
+      ["nvda", 3000, 0], ["msft", 2200, 0], ["qqq", 2400, 1], ["note2", 1500, 0, 14], ["techig", 1400, 1],
       ["gq", 5000, 1], ["baba", 1500, 0], ["pe", 4000, 1], ["gold", 2000, 0], ["usd", 5000, 0],
     ],
   },
@@ -170,8 +170,8 @@ const CLIENTS: ClientSpec[] = [
     id: "c-s4", rmId: "rm-sarah", name: "Isabelle Fontaine", mandate: A, riskProfile: "Balanced",
     banks: ["Julius Baer"], prefersFrequentUpdates: false, lastContactDate: "2026-09-28",
     positions: [
-      ["cict", 500], ["mlt", 400], ["apreit", 500], ["eu", 900], ["gq", 1000],
-      ["sgs", 700], ["gold", 300], ["sgd", 500],
+      ["cict", 200], ["mlt", 150], ["apreit", 100], ["eu", 1400], ["gq", 1300],
+      ["sgs", 850], ["gold", 300], ["sgd", 500],
     ],
   },
   {
@@ -198,57 +198,6 @@ const CLIENTS: ClientSpec[] = [
     banks: ["Bank of Singapore"], prefersFrequentUpdates: true, lastContactDate: "2026-10-07",
     positions: [["mai", 2500], ["gq", 2000], ["sgs", 1800], ["sti", 900], ["gold", 600], ["sgd", 700], ["usd", 500]],
   },
-
-  // ---------- Daniel Wong (Central ARM) ----------
-  {
-    id: "c-d1", rmId: "rm-daniel", name: "Nguyen Thanh Hai", mandate: A, riskProfile: "Aggressive",
-    banks: ["UBS", "Standard Chartered"], prefersFrequentUpdates: false, lastContactDate: "2026-09-23",
-    positions: [
-      ["sia", 4000, 1], ["xle", 1500, 0], ["nvda", 3000, 0], ["qqq", 2500, 0], ["tencent", 5000, 1],
-      ["tracker", 1500, 1], ["gq", 9500, 0], ["pe", 6000, 0], ["gold", 3000, 1], ["usd", 6000, 0],
-    ],
-  },
-  {
-    id: "c-d2", rmId: "rm-daniel", name: "Grace Halim", mandate: D, riskProfile: "Conservative",
-    banks: ["Standard Chartered"], prefersFrequentUpdates: true, lastContactDate: "2026-10-01",
-    positions: [["ust52", 1000], ["longig", 800], ["sdusd", 900], ["sgs", 1200], ["mai", 900], ["gold", 400], ["sgd", 800]],
-  },
-  {
-    id: "c-d3", rmId: "rm-daniel", name: "Benjamin Teo", mandate: A, riskProfile: "Growth",
-    banks: ["DBS", "UBS"], prefersFrequentUpdates: false, lastContactDate: "2026-09-26",
-    positions: [
-      ["note", 1000, 1, 10], ["meta64", 900, 1], ["orcl55", 600, 1], ["msft", 600, 1], ["hsbc", 700, 0],
-      ["gq", 3800, 1], ["jp", 1500, 0], ["india", 1300, 0], ["gold", 700, 1], ["usd", 2400, 1],
-    ],
-  },
-  {
-    id: "c-d4", rmId: "rm-daniel", name: "Chong Mei Ling", mandate: A, riskProfile: "Balanced",
-    banks: ["DBS"], prefersFrequentUpdates: false, lastContactDate: "2026-08-30",
-    positions: [
-      ["tracker", 500], ["aia", 300], ["cict", 150], ["sti", 700], ["sgs", 800],
-      ["gq", 700], ["gold", 250], ["sgd", 500],
-    ],
-  },
-  {
-    id: "c-d5", rmId: "rm-daniel", name: "Arjun Kapoor", mandate: A, riskProfile: "Growth",
-    banks: ["Standard Chartered"], prefersFrequentUpdates: false, lastContactDate: "2026-09-27",
-    positions: [["india", 2000], ["gq", 2300], ["jp", 1000], ["eu", 900], ["gold", 600], ["usd", 1000]],
-  },
-  {
-    id: "c-d6", rmId: "rm-daniel", name: "Helen Sim", mandate: D, riskProfile: "Conservative",
-    banks: ["DBS"], prefersFrequentUpdates: false, lastContactDate: "2026-09-19",
-    positions: [["sgs", 1600], ["sgdfd", 900], ["mai", 800], ["sti", 400], ["gold", 300], ["sgd", 400]],
-  },
-  {
-    id: "c-d7", rmId: "rm-daniel", name: "Kenji Watanabe", mandate: A, riskProfile: "Balanced",
-    banks: ["UBS"], prefersFrequentUpdates: false, lastContactDate: "2026-10-03",
-    positions: [["jp", 3000], ["gq", 2500], ["mai", 1500], ["gold", 1200], ["usd", 1800], ["sdusd", 200]],
-  },
-  {
-    id: "c-d8", rmId: "rm-daniel", name: "Stephanie Ng", mandate: D, riskProfile: "Growth",
-    banks: ["Bank of Singapore"], prefersFrequentUpdates: false, lastContactDate: "2026-09-16",
-    positions: [["gq", 2200], ["eu", 1000], ["india", 800], ["pe", 600], ["gold", 400], ["usd", 600]],
-  },
 ];
 
 /** Small deterministic variation so cost bases differ between clients without using randomness. */
@@ -258,13 +207,19 @@ function jitter(seed: string): number {
   return 1 + ((h % 81) - 40) / 1000; // 0.96 to 1.04
 }
 
+/** Next scheduled six-monthly review, in the same order as CLIENTS. */
+const NEXT_REVIEW = [
+  "2027-01-15", "2026-11-19", "2027-02-11", "2026-12-03", "2027-03-18", "2027-04-08", "2026-11-26", "2027-02-25",
+  "2026-12-17", "2027-01-28", "2026-11-12", "2027-03-04", "2027-04-22", "2026-12-10", "2027-01-21", "2027-03-25",
+];
+
 const clients: Client[] = [];
 const holdings: Holding[] = [];
 
-for (const spec of CLIENTS) {
+CLIENTS.forEach((spec, index) => {
   const { positions, ...rest } = spec;
   const aumUsd = positions.reduce((sum, p) => sum + p[1], 0) * 1000;
-  clients.push({ ...rest, aumUsd });
+  clients.push({ ...rest, aumUsd, nextReviewDate: NEXT_REVIEW[index] });
   for (const [key, valueK, bankIndex = 0, barrierDistancePct] of positions) {
     const [instrument, assetClass, currency, tags, costRatio] = INSTRUMENTS[key] as Instrument;
     const marketValueUsd = valueK * 1000;
@@ -281,7 +236,7 @@ for (const spec of CLIENTS) {
       ...(barrierDistancePct !== undefined ? { barrierDistancePct } : {}),
     });
   }
-}
+});
 
 const dataDir = resolve(dirname(fileURLToPath(import.meta.url)), "../src/data");
 writeFileSync(resolve(dataDir, "clients.json"), JSON.stringify(clients, null, 2) + "\n");

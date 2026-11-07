@@ -1,35 +1,35 @@
 import JSZip from "jszip";
 import { describe, expect, it } from "vitest";
 import { data, DEMO_DATE, HOLDINGS_AS_OF } from "../data";
-import { runScan } from "../logic/scan";
+import { bookStateAt } from "../logic/book";
 import { splitSentences } from "../logic/text";
-import { buildPortfolioReviewHandoff, buildProposalHandoff, DISCLAIMER } from "./builders";
+import { DISCLAIMER } from "./builders";
 import { DOCX_HEADING_COLOR, docxBuffer } from "./docx";
 import { THEME_ZH } from "./mandarin";
-import { docToText, portfolioReviewToDoc, proposalToDoc, talkingPointsMessage, talkingPointsToDoc } from "./model";
+import { docToText, talkingPointsMessage, talkingPointsToDoc } from "./model";
 import { buildTalkingPoints, draftTalkingPoints, wordingOf } from "./talkingPoints";
 
 const rm = data.rms[0];
 const ctx = { rm, date: DEMO_DATE };
-const scan = runScan({ date: DEMO_DATE, rmId: rm.id, upTo: "morning" });
+const scan = bookStateAt({ date: DEMO_DATE, rmId: rm.id, at: "08:30" });
 const top = scan.clients[0];
-const noteHolder = scan.clients.find((r) => r.primary.nextStep.flag === "Barrier risk")!;
+const noteHolder = scan.clients.find((r) => r.primary.flag === "Barrier risk")!;
 
 const talkingPoints = buildTalkingPoints(noteHolder, ctx);
-const review = buildPortfolioReviewHandoff(top, ctx, "Call before Thursday.", ["Client uses 2 banks."], "2026-10-12T01:30:00.000Z");
-const proposal = buildProposalHandoff(scan.prospectThemes[0], "Tech founder, SGD 10m, growth", ctx, "", [], "2026-10-12T01:30:00.000Z");
-
-const models = [talkingPointsToDoc(talkingPoints), portfolioReviewToDoc(review), proposalToDoc(proposal)];
+const models = [talkingPointsToDoc(talkingPoints), talkingPointsToDoc(buildTalkingPoints(top, ctx))];
 
 describe("shared header (section 8)", () => {
-  it("is the same five fields on all three documents", () => {
+  it("is the same five fields on every talking-points document", () => {
     for (const model of models) {
-      expect(model.header.map((h) => h.label).slice(1)).toEqual(["Theme", "Why now", "Data as of", "Prepared for"]);
+      expect(model.header.map((h) => h.label)).toEqual(["Client", "Theme", "Why now", "Data as of", "Prepared for"]);
       expect(model.header[3].value).toBe(HOLDINGS_AS_OF);
       expect(model.header[4].value).toBe("Kevin Tan · 12 Oct 2026");
     }
     expect(models[0].header[0]).toEqual({ label: "Client", value: noteHolder.client.name });
-    expect(models[2].header[0]).toEqual({ label: "Prospect", value: "Tech founder, SGD 10m, growth" });
+  });
+
+  it("is labelled for the RM's conversation, shareable after approval", () => {
+    expect(models[0].audience).toBe("For your conversation · shareable after approval");
   });
 });
 
@@ -81,7 +81,7 @@ describe("pre-written Mandarin (1.5 offline fallback)", () => {
     const digits = (text: string) => (text.match(/\d+(\.\d+)?/g) ?? []).sort();
     for (const rmEntry of data.rms) {
       for (const upTo of ["morning", "intraday"] as const) {
-        for (const row of runScan({ date: DEMO_DATE, rmId: rmEntry.id, upTo }).clients) {
+        for (const row of bookStateAt({ date: DEMO_DATE, rmId: rmEntry.id, at: upTo === "morning" ? "08:30" : "23:59" }).clients) {
           const draft = draftTalkingPoints(row, { rm: rmEntry, date: DEMO_DATE });
           const en = wordingOf(draft, "en");
           const zh = wordingOf(draft, "zh");
@@ -103,40 +103,14 @@ describe("pre-written Mandarin (1.5 offline fallback)", () => {
   });
 });
 
-describe("hand-off payloads (8.2, 8.3 and update 2.1)", () => {
-  it("carries the client, exposure, options and RM context for a portfolio review", () => {
-    expect(review.kind).toBe("portfolio-review");
-    expect(review.client).toMatchObject({ mandate: "Discretionary", riskProfile: "Conservative" });
-    expect(review.affectedHoldings.length).toBeGreaterThan(0);
-    expect(review.exposure.estImpactUsd).toBeLessThan(0);
-    expect(review.optionsToDiscuss.every((o) => o.riskLevel <= 2)).toBe(true);
-    expect(review.rmContext).toBe("Call before Thursday.");
-    expect(review.openGaps).toEqual(["Client uses 2 banks."]);
-    expect(JSON.parse(JSON.stringify(review))).toEqual(review);
-  });
-
-  it("shows the RM context and open gaps in the document under RM context", () => {
-    const section = portfolioReviewToDoc(review).sections.at(-1)!;
-    expect(section.heading).toBe("RM context");
-    expect(docToText(portfolioReviewToDoc(review))).toContain("Call before Thursday.");
-    expect(docToText(portfolioReviewToDoc(review))).toContain("Open gaps when this was sent: Client uses 2 banks.");
-    expect(proposalToDoc(proposal).sections.at(-1)).toMatchObject({ heading: "RM context", blocks: [{ kind: "paragraph", text: "No context added." }] });
-  });
-
-  it("carries the prospect profile, products and risks for a proposal", () => {
-    expect(proposal.kind).toBe("proposal");
-    expect(proposal.prospectFit).toMatchObject({ profile: "Tech founder, SGD 10m, growth", suits: "Growth investors underweight Asia" });
-    expect(proposal.products.length).toBeGreaterThan(0);
-    expect(proposal.keyRisks.length).toBeGreaterThanOrEqual(2);
-  });
-
+describe("text export", () => {
   it("renders every document to text without template leftovers", () => {
     for (const model of models) expect(docToText(model)).not.toMatch(/undefined|NaN|\[object/);
   });
 });
 
 describe(".docx export (update 4: light, with brand-blue headings)", () => {
-  it("builds a Word file for each of the three document types", async () => {
+  it("builds a Word file for each talking-points document", async () => {
     for (const model of models) {
       const buffer = await docxBuffer(model);
       expect(buffer.subarray(0, 2).toString("latin1"), model.title).toBe("PK");
