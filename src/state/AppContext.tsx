@@ -60,6 +60,9 @@ function isRm(id: string | null): id is string {
   return !!id && data.rms.some((rm) => rm.id === id);
 }
 
+/** The demo opens on the Dedicated ARM, whose book has today's Client Alerts. */
+export const DEFAULT_RM_ID = (data.rms.find((rm) => rm.arm_model === "Dedicated ARM") ?? data.rms[0]).id;
+
 /**
  * The exported Client Alerts link to #/alerts/<id>?rm=<id>, which selects that RM on arrival.
  * With HashRouter the query sits inside the hash, so it is read from there.
@@ -76,14 +79,15 @@ function resolveInitialRmId(): string {
       inSearch.delete("rm");
       const rest = (params: URLSearchParams) => (params.toString() ? `?${params.toString()}` : "");
       window.history.replaceState(null, "", `${pathname}${rest(inSearch)}${hashPath}${rest(inHash)}`);
-      writeStored("local", RM_KEY, fromUrl);
+      writeStored("session", RM_KEY, fromUrl);
       return fromUrl;
     }
   } catch {
     // Fall through to the stored or default RM.
   }
-  const stored = readStored<string | null>("local", RM_KEY, null);
-  return isRm(stored) ? stored : data.rms[0].id;
+  // The RM choice lasts for this browser tab only, so every new visit starts on the Dedicated ARM.
+  const stored = readStored<string | null>("session", RM_KEY, null);
+  return isRm(stored) ? stored : DEFAULT_RM_ID;
 }
 
 // Resolved once at module load so React's double-invoked initialisers cannot disagree.
@@ -100,7 +104,7 @@ function withSeeds(entries: ReviewLogEntry[]): ReviewLogEntry[] {
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [rmId, setRmIdState] = usePersistentState<string>("local", RM_KEY, () => INITIAL_RM_ID);
+  const [rmId, setRmIdState] = usePersistentState<string>("session", RM_KEY, () => INITIAL_RM_ID);
   const [log, setLog] = usePersistentState<LogEntry[]>("local", LOG_KEY, () => readStored("local", LOG_KEY, []));
   const [reviewLog, setReviewLog] = usePersistentState<ReviewLogEntry[]>("local", REVIEW_KEY, () =>
     withSeeds(readStored<ReviewLogEntry[]>("local", REVIEW_KEY, [])),
@@ -182,13 +186,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     for (const alert of monitor.alerts) logAlert(alert, alert.id);
   }, [addLog, logAlert, rm.id, brief, monitor.alerts, resetCount]);
 
-  // A clean slate for a new demo: every RM's chats, the activity log, and the review log back to its seeds.
+  // A clean slate for a new demo: back to the Dedicated ARM, every RM's chats, the activity log, and the review log back to its seeds.
   const resetDemo = useCallback(() => {
-    setSession(blankSession(rm.id));
+    setRmIdState(DEFAULT_RM_ID);
+    setSession(blankSession(DEFAULT_RM_ID));
     setReviewLog(withSeeds([]));
     setLog([]);
     setResetCount((n) => n + 1);
-  }, [rm.id, setSession, setReviewLog, setLog]);
+  }, [setRmIdState, setSession, setReviewLog, setLog]);
 
   const openClientWorkspace = useCallback(
     (alert: Alert, trigger: AlertTrigger, row: RankedClient | undefined) => {

@@ -89,7 +89,9 @@ Two RMs: **Kevin Tan** (Dedicated ARM) and **Sarah Lim** (Central ARM). The demo
 6. Go to **Alerts** and show Monitor activity: every news item is checked as it arrives, and most send nothing. The oil-sanctions item at 13:05 needed no alert; the call notice at 13:20 sent the 13:21 alert for 1 new client (Victor Ong). Nobody is alerted twice.
 7. Switch to **Sarah Lim**: only the brief, and every item says "No alert needed". "You only hear from Client Alerts when it matters, whenever that is."
 
-To repeat the demo: **Reset demo** on the Activity log page clears the chats, the activity log and today's review entries (the two seeded Eleanor Chua entries stay). **Clear log** empties only the activity log. Both ask for confirmation on the page.
+The app always opens on **Kevin Tan** (the Dedicated ARM, who has today's Client Alerts). Switching RM lasts only for the current browser tab.
+
+To repeat the demo: **Reset demo** on the Activity log page switches back to Kevin Tan and clears the chats, the activity log and today's review entries (the two seeded Eleanor Chua entries stay). **Clear log** empties only the activity log. Both ask for confirmation on the page.
 
 ## What is in the box
 
@@ -103,7 +105,7 @@ src/
   talkingPoints/      Chat logic: locked figures, offline quick actions, versions and approval, diff
   ai/client.ts        Browser side of the chat API, and the offline default
   email/template.ts   The 9 AM brief and the CTA alert email, shared by the inbox and the HTML export
-  theme/palette.ts    The dark Azimut palette and contrast helpers
+  theme/palette.ts    The dark (default) and light Azimut palettes and contrast helpers
   state/              App state (React context) and guarded localStorage/sessionStorage access
   components/, pages/ The UI
 server/               The Express endpoint, the Claude call and the system prompt
@@ -149,6 +151,9 @@ After update 3 (demo feedback):
 - **No demo controls or demo date.** The app is fixed at 14:00, with the 13:21 alert already in the inbox. **Reset demo** moved to the Activity log page.
 - **Review log became "Upcoming reviews"**: one master-detail screen replaces the Review log list and the separate Portfolio Review page, so the back button stays within one tab. Timeline entries are plain sentences with a small icon per step.
 - **"Log for next portfolio review"** is an explicit button in the client workspace. Drafted entries that were never logged are not sent to the Portfolio Review agent. Edits are saved with that button, and later with **Update log**.
+- **MarketPulse logo**: four slanted blue bars and the name, drawn as an inline SVG (`MarketPulseMark` in `src/components/Brand.tsx`, also `public/favicon.svg`). The Azimut logo file is still yours to add in `public/brand/`.
+- **Light mode**: dark stays the default; the sun/moon button in the header switches theme and is remembered per browser. Both palettes pass WCAG AA (see `palette.test.ts`). Emails in the inbox keep their dark email styling in both themes, as received.
+- **Phones**: under 640px the header shows the MarketPulse logo, the RM picker and the theme button on one row and the nav on a second, scrollable row; pages stack, the Activity log becomes cards, and choosing an email or a client scrolls to it.
 - **Renamed to MarketPulse.** The emails are the MarketPulse Daily Brief (from "MarketPulse (Azimut)") and MarketPulse Alerts (from "MarketPulse Alerts (Azimut)"); alert subjects still start "Client Alert:". The alert email's ready line is now just "Talking points drafted", since nothing is logged until the RM logs it.
 
 From update 3:

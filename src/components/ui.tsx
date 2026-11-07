@@ -104,9 +104,9 @@ export function LockIcon({ className = "h-3.5 w-3.5" }: { className?: string }) 
 const buttonBase = "inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-semibold transition-colors";
 
 export const buttonPrimary = `${buttonBase} bg-brand text-white hover:bg-brand-hover disabled:cursor-not-allowed disabled:bg-raised disabled:text-muted/60`;
-export const buttonSecondary = `${buttonBase} border border-line bg-raised text-ink hover:border-brand-tint hover:text-white disabled:cursor-not-allowed disabled:border-line/60 disabled:bg-surface disabled:text-muted/50 disabled:hover:border-line/60`;
+export const buttonSecondary = `${buttonBase} border border-line bg-raised text-ink hover:border-brand-tint hover:text-strong disabled:cursor-not-allowed disabled:border-line/60 disabled:bg-surface disabled:text-muted/50 disabled:hover:border-line/60`;
 export const buttonDisabledLink = `${buttonBase} cursor-not-allowed border border-line/60 bg-surface text-muted/50`;
-export const textLink = "font-medium text-brand-tint underline underline-offset-2 hover:text-white";
+export const textLink = "font-medium text-brand-tint underline underline-offset-2 hover:text-strong";
 export const fieldInput =
   "rounded-md border border-line bg-bg text-ink placeholder:text-muted/80 focus:border-brand-tint focus:outline-none disabled:cursor-not-allowed disabled:opacity-60";
 export const card = "rounded-lg border border-line bg-surface";

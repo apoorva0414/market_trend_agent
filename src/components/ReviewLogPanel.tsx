@@ -84,7 +84,7 @@ export function ReviewLogPanel({ entry }: { entry: ReviewLogEntry }) {
                 title={setByButton ? "Set with the No contact needed button" : undefined}
                 onClick={() => setDraft((d) => ({ ...d, outcome: active ? undefined : outcome, discussAtNextReview: !active && outcome === "Contacted: concerns raised" ? true : d.discussAtNextReview }))}
                 className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
-                  active ? "border-brand bg-brand text-white" : "border-line bg-raised text-soft hover:border-brand-tint hover:text-white"
+                  active ? "border-brand bg-brand text-white" : "border-line bg-raised text-soft hover:border-brand-tint hover:text-strong"
                 }`}
               >
                 {outcome}

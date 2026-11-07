@@ -18,10 +18,10 @@ export function ActivityLog() {
   const { log, clearLog, resetDemo } = useApp();
   const [confirming, setConfirming] = useState<"clear" | "reset" | null>(null);
   return (
-    <div className="mx-auto max-w-[1400px] px-6 py-10">
+    <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 sm:py-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-serif text-4xl tracking-tight text-ink">Activity log</h1>
+          <h1 className="font-serif text-3xl tracking-tight sm:text-4xl text-ink">Activity log</h1>
           <p className="mt-2 max-w-3xl text-sm text-muted">
             This log can also serve as evidence that discretionary clients were kept informed (to confirm with Compliance).
           </p>
@@ -29,7 +29,7 @@ export function ActivityLog() {
         <div className="flex flex-wrap items-center gap-2">
           {confirming ? (
             <>
-              <span className="text-sm text-soft">{confirming === "reset" ? "Reset the demo? This clears the log, today's review entries and drafts." : "Clear the activity log?"}</span>
+              <span className="text-sm text-soft">{confirming === "reset" ? "Reset the demo? This goes back to the Dedicated ARM and clears the log, today's review entries and drafts." : "Clear the activity log?"}</span>
               <button
                 type="button"
                 className={buttonSecondary}
@@ -60,7 +60,31 @@ export function ActivityLog() {
         </div>
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-lg border border-line bg-surface">
+      {/* Phones: one card per entry. */}
+      <ul className="mt-6 space-y-3 md:hidden" aria-label="Activity log">
+        {log.map((entry) => (
+          <li key={entry.id} className="rounded-lg border border-line bg-surface p-4 text-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className={`inline-flex rounded-full border px-2.5 py-0.5 text-[11px] font-semibold whitespace-nowrap ${TYPE_STYLE[entry.type]}`}>{entry.type}</span>
+              <span className="text-xs text-muted tabular-nums">{fmtTimestampSgt(entry.timestamp)}</span>
+            </div>
+            <p className="mt-2 font-medium text-ink">{entry.subject}</p>
+            {entry.theme && <p className="mt-0.5 text-muted">{entry.theme}</p>}
+            {entry.detail && <p className="mt-0.5 text-muted">{entry.detail}</p>}
+            <p className="mt-1.5 text-xs text-muted">{entry.rmName}</p>
+          </li>
+        ))}
+        {log.length === 0 && (
+          <li className="rounded-lg border border-line bg-surface px-4 py-10 text-center text-sm text-muted">
+            Nothing logged yet.{" "}
+            <Link to="/" className="font-medium text-brand-tint underline underline-offset-2">
+              Open the inbox
+            </Link>
+          </li>
+        )}
+      </ul>
+
+      <div className="mt-6 hidden overflow-x-auto rounded-lg border border-line bg-surface md:block">
         <table className="w-full min-w-[900px] text-sm">
           <caption className="sr-only">Decisions, downloads and shares recorded for each RM</caption>
           <thead>

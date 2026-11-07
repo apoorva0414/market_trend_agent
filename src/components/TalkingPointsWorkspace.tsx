@@ -338,7 +338,7 @@ export function TalkingPointsWorkspace({ row, ctx, scanKey, onApproved, onShared
                         type="button"
                         disabled={chatDisabled}
                         onClick={() => void send(action.label, action.id)}
-                        className="rounded-full border border-line bg-raised px-2.5 py-1 text-xs font-medium text-soft transition-colors hover:border-brand-tint hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                        className="rounded-full border border-line bg-raised px-2.5 py-1 text-xs font-medium text-soft transition-colors hover:border-brand-tint hover:text-strong disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {action.label}
                       </button>
@@ -440,7 +440,7 @@ export function TalkingPointsWorkspace({ row, ctx, scanKey, onApproved, onShared
 
           {shareMessage && (
             <details className="text-sm">
-              <summary className="font-medium text-brand-tint select-none hover:text-white">Show the email and WhatsApp text (v{approved?.n})</summary>
+              <summary className="font-medium text-brand-tint select-none hover:text-strong">Show the email and WhatsApp text (v{approved?.n})</summary>
               <p className="mt-2 text-xs text-muted">Subject: {shareMessage.subject}</p>
               <textarea
                 readOnly

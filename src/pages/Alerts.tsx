@@ -56,15 +56,15 @@ export function AlertOverview() {
   const { reviewLog } = useApp();
   if (!alert) return missing;
   return (
-    <div className="mx-auto max-w-[1100px] space-y-6 px-6 py-8">
+    <div className="mx-auto max-w-[1100px] space-y-6 px-4 py-6 sm:px-6 sm:py-8">
       <div>
-        <Link to="/alerts" className="text-sm font-medium text-brand-tint hover:text-white">
+        <Link to="/alerts" className="text-sm font-medium text-brand-tint hover:text-strong">
           ← All alerts
         </Link>
         <p className="mt-4 text-[10px] font-semibold tracking-widest text-checkpoint uppercase">
           Client Alert · detected {alert.time} SGT · {alert.triggers.length} {alert.triggers.length === 1 ? "client" : "clients"}
         </p>
-        <h1 className="mt-1 font-serif text-4xl tracking-tight text-ink">Clients affected</h1>
+        <h1 className="mt-1 font-serif text-3xl tracking-tight sm:text-4xl text-ink">Clients affected</h1>
         <p className="mt-2 text-sm text-muted">Talking points are drafted for each client. You decide what, if anything, to share. The agent never contacts clients.</p>
       </div>
       <ul className="space-y-3">
@@ -213,7 +213,7 @@ function NoContactNeeded({ alert, clientId, done }: { alert: Alert; clientId: st
       <button type="button" className={buttonPrimary} onClick={confirm}>
         Confirm
       </button>
-      <button type="button" className="text-sm text-muted hover:text-white" onClick={() => setAsking(false)}>
+      <button type="button" className="text-sm text-muted hover:text-strong" onClick={() => setAsking(false)}>
         Cancel
       </button>
     </div>
@@ -251,14 +251,14 @@ export function ClientWorkspace() {
   const now = () => new Date().toISOString();
 
   return (
-    <div className="mx-auto max-w-[1400px] space-y-8 px-6 py-8">
+    <div className="mx-auto max-w-[1400px] space-y-8 px-4 py-6 sm:px-6 sm:py-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <Link to={`/alerts/${alert.id}`} className="text-sm font-medium text-brand-tint hover:text-white">
+          <Link to={`/alerts/${alert.id}`} className="text-sm font-medium text-brand-tint hover:text-strong">
             ← All clients in this alert
           </Link>
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <h1 className="font-serif text-4xl tracking-tight text-ink">{client.name}</h1>
+            <h1 className="font-serif text-3xl tracking-tight sm:text-4xl text-ink">{client.name}</h1>
             <StatusPill status={clientStatus(entry)} />
           </div>
           <p className="mt-1 text-sm text-muted">
@@ -305,7 +305,7 @@ function MonitorActivity() {
       </p>
       <p className="mt-1 text-xs text-muted">Every news item and holding event is checked as it arrives. An email goes out only when a client is materially affected.</p>
       <details className="mt-3 text-sm">
-        <summary className="font-medium text-brand-tint select-none hover:text-white">Every item evaluated</summary>
+        <summary className="font-medium text-brand-tint select-none hover:text-strong">Every item evaluated</summary>
         <ul className="mt-3 divide-y divide-line rounded-md border border-line bg-bg">
           {[...evaluations].reverse().map((e) => (
             <li key={e.itemId} className="flex items-baseline gap-3 px-3 py-2">
@@ -331,13 +331,13 @@ function HowAlertsWork() {
   const [open, setOpen] = useState(false);
   return (
     <div className="relative inline-block">
-      <button type="button" aria-expanded={open} onClick={() => setOpen(!open)} className="text-sm font-medium text-brand-tint underline underline-offset-2 hover:text-white">
+      <button type="button" aria-expanded={open} onClick={() => setOpen(!open)} className="text-sm font-medium text-brand-tint underline underline-offset-2 hover:text-strong">
         How alerts work
       </button>
       {open && (
         <div role="dialog" aria-label="How alerts work" className="absolute left-0 z-20 mt-2 w-[26rem] max-w-[calc(100vw-3rem)] rounded-lg border border-line bg-raised p-4 text-sm leading-relaxed text-soft shadow-xl shadow-black/40">
           <p>{howAlertsWork()}</p>
-          <button type="button" onClick={() => setOpen(false)} className="mt-3 text-xs font-medium text-brand-tint hover:text-white">
+          <button type="button" onClick={() => setOpen(false)} className="mt-3 text-xs font-medium text-brand-tint hover:text-strong">
             Close
           </button>
         </div>
@@ -350,10 +350,10 @@ function HowAlertsWork() {
 export function AlertsHome() {
   const { alerts, rm } = useApp();
   return (
-    <div className="mx-auto max-w-[1100px] space-y-6 px-6 py-10">
+    <div className="mx-auto max-w-[1100px] space-y-6 px-4 py-6 sm:px-6 sm:py-10">
       <div>
         <p className="text-sm text-muted">Monday, 12 October 2026 · {rm.name}</p>
-        <h1 className="mt-1 font-serif text-4xl tracking-tight text-ink">Client Alerts</h1>
+        <h1 className="mt-1 font-serif text-3xl tracking-tight sm:text-4xl text-ink">Client Alerts</h1>
       </div>
       <MonitorActivity />
       <section>

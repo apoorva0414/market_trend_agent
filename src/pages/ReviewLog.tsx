@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useParams } from "react-router-dom";
 import { buttonSecondary, card, eyebrow } from "../components/ui";
 import { data } from "../data";
@@ -153,10 +153,15 @@ export function UpcomingReviews() {
   const clients = data.clients.filter((c) => c.rmId === rm.id).sort((a, b) => a.nextReviewDate.localeCompare(b.nextReviewDate));
   const entriesFor = (client: Client) => periodEntries(reviewLog, client.id, client.nextReviewDate);
   const selected = clients.find((c) => c.id === clientId) ?? clients.find((c) => entriesFor(c).length > 0) ?? clients[0];
+  const detail = useRef<HTMLDivElement>(null);
+  // On a phone the list and the detail are stacked, so bring the chosen client into view.
+  useEffect(() => {
+    if (clientId && window.matchMedia("(max-width: 1023px)").matches) detail.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [clientId]);
 
   return (
-    <div className="mx-auto max-w-[1300px] px-6 py-10">
-      <h1 className="font-serif text-4xl tracking-tight text-ink">Upcoming reviews</h1>
+    <div className="mx-auto max-w-[1300px] px-4 py-6 sm:px-6 sm:py-10">
+      <h1 className="font-serif text-3xl tracking-tight sm:text-4xl text-ink">Upcoming reviews</h1>
       <p className="mt-2 max-w-3xl text-sm text-muted">
         Your clients' scheduled portfolio reviews, soonest first, with everything you logged since the last one. The Portfolio Review agent starts from this.
       </p>
@@ -201,7 +206,9 @@ export function UpcomingReviews() {
         </ul>
 
         {selected ? (
-          <ClientReview client={selected} entries={entriesFor(selected)} />
+          <div ref={detail} className="min-w-0 scroll-mt-4">
+            <ClientReview client={selected} entries={entriesFor(selected)} />
+          </div>
         ) : (
           <p className={`${card} p-6 text-sm text-muted`}>No clients.</p>
         )}

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Dark mode only, Azimut brand (update spec section 4). There is no light theme and no toggle. */
+/* Azimut brand. Dark is the default theme (update spec section 4); a light theme can be chosen in the header. */
 @theme {
   /* Base */
   --color-bg: #0d1520;
@@ -10,6 +10,8 @@
   --color-ink: #e6edf5;
   --color-soft: #c3cedb;
   --color-muted: #93a4b8;
+  /* Strongest text: active nav and hover states. */
+  --color-strong: #ffffff;
 
   /* Brand. Azimut blue is for filled controls; on dark surfaces text and links use the lighter tint. */
   --color-brand: #356292;
@@ -25,6 +27,27 @@
 
   --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+}
+
+/* Light theme, chosen with the toggle in the header (stored per browser). Same Azimut blue for filled
+   controls; text and link colours are darker so they keep WCAG AA contrast on light surfaces. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #f3f5f8;
+  --color-surface: #ffffff;
+  --color-raised: #e9eef4;
+  --color-line: #cfd8e3;
+  --color-ink: #13223a;
+  --color-soft: #2e3f57;
+  --color-muted: #536378;
+  --color-strong: #0a1626;
+  --color-brand: #356292;
+  --color-brand-hover: #2b5079;
+  --color-brand-tint: #2a5687;
+  --color-gain: #16734a;
+  --color-loss: #b3303b;
+  --color-checkpoint: #8a560b;
+  --color-banner: #fbefd9;
 }
 
 html {
