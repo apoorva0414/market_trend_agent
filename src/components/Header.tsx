@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { SAMPLE_BANNER } from "../data";
+import { ABOUT_PATH } from "../logic/intro";
 import { useApp } from "../state/AppContext";
 import { useTheme } from "../state/theme";
 import { BrandMark } from "./Brand";
@@ -79,10 +80,13 @@ export function Header() {
   const { rms, rm, setRmId } = useApp();
   return (
     <header className="z-30 sm:sticky sm:top-0">
-      <div className="flex items-center justify-center gap-x-3 gap-y-1 border-b border-checkpoint/40 bg-banner px-4 py-1.5 text-xs tracking-wide text-checkpoint">
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-b border-checkpoint/40 bg-banner px-4 py-1.5 text-xs tracking-wide text-checkpoint">
         <span role="note" className="min-w-0 text-center">
           {SAMPLE_BANNER}
         </span>
+        <Link to={ABOUT_PATH} className="shrink-0 text-checkpoint underline underline-offset-2">
+          About this prototype
+        </Link>
         <ResetDemoButton />
       </div>
       <div className="border-b border-line bg-surface">

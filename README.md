@@ -81,6 +81,8 @@ BASE_PATH=/my-repo/ npm run build
 
 Two RMs: **Kevin Tan** (Dedicated ARM) and **Sarah Lim** (Central ARM). The demo is set at 14:00 on Mon 12 Oct 2026, so all of the day's emails are already in.
 
+Opening the link shows an intro screen for visitors. Click **Enter the demo** to start. You can reopen it from **About this prototype** in the banner.
+
 1. Log in as **Kevin Tan**. The inbox has three emails, newest first: a Client Alert at 13:21 (bond call notice), the MarketPulse Daily Brief at 09:00, and a Client Alert at 06:41, sent as soon as the US rates news broke.
 2. Open the Daily Brief. It's the full brief, read only, with nothing to click: "this is your morning read."
 3. Open the 06:41 Client Alert. Walk through what happened, why each client and what's ready. Click **Open in portal**.
