@@ -80,7 +80,7 @@ export function IntroScreen({ onClose }: { onClose: () => void }) {
           <h1 id="intro-headline" ref={heading} tabIndex={-1} className="mt-3 font-serif text-[1.75rem] leading-tight tracking-tight text-ink outline-none sm:text-[1.95rem]">
             {HEADLINE}
           </h1>
-          <p className="mt-4 max-w-[70ch] text-[15px] leading-[1.65] text-soft">{CONTEXT}</p>
+          <p className="mt-4 text-[15px] leading-[1.65] text-soft">{CONTEXT}</p>
           <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
             <EnterButton onClose={onClose} />
             <span className="text-xs text-muted">{SAMPLE_NOTE}</span>
